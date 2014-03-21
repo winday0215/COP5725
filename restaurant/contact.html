@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Kravings.com | Contact</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen">
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="css/layout.css" type="text/css" media="screen">
+<script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="js/cufon-yui.js" type="text/javascript"></script>
+<script src="js/cufon-replace.js" type="text/javascript"></script>
+<script src="js/Dynalight_400.font.js" type="text/javascript"></script>
+<script src="js/FF-cash.js" type="text/javascript"></script>
+<!--[if lt IE 9]><script type="text/javascript" src="js/html5.js"></script><![endif]-->
+</head>
+<body id="page6">
+<!--==============================header=================================-->
+<header>
+  <div class="row-top">
+    <div class="main">
+      <div class="wrapper">
+        <h1><a href="index.html">Kravings<span>.com</span></a></h1>
+        <nav>
+          <ul class="menu">
+            <li>      
+          		<form action="search.php" method="post"> 
+			  		<input type="text" id="tb7" name="searchkey" id="searchkey"/>
+			  		<select name="searchtype" id="searchtype">
+				  		<option id="">--Search By--</option>
+				  		<option id="city">City</option>
+				  		<option id="name">Restaurant Name</option>
+				  		<option id="zipcode">Zipcode</option>
+			  		</select>
+			  		<button name="searchbutton" id="searchbutton">Search</button> 
+			  	</form>
+      		</li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="signin.html">SignIn/SignUp </a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <div class="row-bot">
+    <div class="row-bot-bg">
+      <div class="main">
+        <h2>Impressive Selection <span>for any Occasion</span></h2>
+      </div>
+    </div>
+  </div>
+</header>
+<!--==============================content================================-->
+<section id="content">
+  <div class="main">
+    <div class="wrapper">
+      <article class="col-1">
+        <div class="indent-left">
+          <h3 class="p1">Our Contacts</h3>
+          <figure class="indent-bot">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13868.58716118274!2d-82.33458549999996!3d29.657514499999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e8a39d4f0969b5%3A0xd21b17bc0529867e!2sDepartment+of+Computer+and+Information+Science+and+Engineering!5e0!3m2!1sen!2sus!4v1395363194504" width="240" height="180" frameborder="0" style="border:0"></iframe>
+          </figure>
+          <dl>
+            <dt class="p1">CISE, University of Florida, Gainesville, FL</dt>
+            <dd><span>Freephone:</span> +1 800 000 0000</dd>
+            <dd><span>Telephone:</span> +1 800 000 0000</dd>
+            <dd><span>Email:</span><a class="color-2" href="#">contact@kravings.com</a></dd>
+          </dl>
+        </div>
+      </article>
+      <article class="col-2">
+        <h3 class="p1">Contact Form</h3>
+        <form id="contact-form" action="php/contact.php" method="post" enctype="multipart/form-data">
+          <fieldset>
+            <label><span class="text-form">Your Name:</span>
+              <input name="name" type="text" />
+            </label>
+            <label><span class="text-form">Your Email:</span>
+              <input name="email" type="text" />
+            </label>
+            <label><span class="text-form">Message Type:</span>
+              	<select name="messagetype" id="messagetype">
+				  	<option id="error">Error</option>
+				  	<option id="suggestion">Suggestion</option>
+			  	</select>
+            </label>
+            <div class="wrapper">
+              <div class="text-form">Your Message:</div>
+              <div class="extra-wrap">
+                <textarea></textarea>
+                <div class="clear"></div>
+                <div class="buttons"> <a class="button-2" href="#">Clear</a> <a class="button-2" href="#">Send</a> </div>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </article>
+    </div>
+  </div>
+</section>
+<!--==============================footer=================================-->
+<footer>
+  <div class="main">
+    <div class="aligncenter"> <span>Copyright &copy; <a href="#">Kravings.com</a> All Rights Reserved</span> Design by <a target="_blank" href="http://www.templatemonster.com/">Kravings.com</a> </div>
+  </div>
+</footer>
+</html>
