@@ -1,7 +1,7 @@
 
 <?php
 $connection = oci_connect($username = 'jing',
-                          $password = 'Sp14Cop5725',
+                          $password = 'spring123456',
                           $connection_string = '//oracle.cise.ufl.edu/orcl');
 $statement = oci_parse($connection, 'SELECT * FROM useraccount');
 oci_execute($statement);
