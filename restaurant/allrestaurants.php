@@ -193,6 +193,7 @@ $(document).ready(function () {
 		
 		//display searched restaurant
 		else {
+			//echo $SearchBy;
 			if($SearchBy == 'City'){
 				$sql = "SELECT r.rid, r.rname, r.street, r.city, 
 				r.state, r.zipcode, r.pricerange, avg(ra.rating) as rating
@@ -205,24 +206,15 @@ $(document).ready(function () {
 			else if($SearchBy == 'Zipcode'){
 				
 				//calculate nearby restaurants by longitude and latitude assigned to target zipcode with 5 miles range
-				$sql = "select r.rid,r.rname,r.street, r.city, r.state, r.zipcode, 	r.pricerange, avg(ra.rating) from restaurant r, rates ra
-where r.zipcode IN (select zip
-from
+				$sql = "select r.rid,r.rname,r.street, r.city, r.state, r.zipcode, r.pricerange, avg(ra.rating) as rating from restaurant r, rates ra
+where r.RID=ra.RID AND r.zipcode IN 
 (
-  SELECT z1.zip as zip, 
-    z1.city, 
-    ((ACOS(
-          SIN(z2.latitude * 3.14 / 180) 
-          * SIN(z1.latitude * 3.14 / 180) 
-          + COS(z2.latitude * 3.14 / 180) 
-          * COS(z1.latitude * 3.14 / 180)
-          * COS((z2.longitude - z1.longitude)*3.14 /180))*180/3.14)*60*1.1515) as distance 
-  FROM zipcode z1, zipcode z2 WHERE z2.zip = '$SearchPara'
-) x
-where distance <= 5)
-GROUP BY r.rid,r.rname, r.street, r.city, 
-				r.state, r.zipcode, r.pricerange 
-				order by r.zipcode ASC";
+select z1.zip from zipcode z1, zipcode z2
+Where z2.zip = '$SearchPara' AND
+SDO_WITHIN_DISTANCE(z1.GEO, z2.GEO, 'distance=10 unit=mile')='TRUE'
+)
+GROUP BY r.rid,r.rname, r.street, r.city, r.state, r.zipcode, r.pricerange 
+order by r.zipcode ASC";
 			}
 			else if($SearchBy == 'RestaurantName'){
 				$SearchPara = strtoupper($SearchPara);
@@ -249,8 +241,9 @@ GROUP BY r.rid,r.rname, r.street, r.city,
 			oci_execute($stid1);
 			
 			$i =1;
-
+			
 			while (oci_fetch($stid1)) {
+			//echo $rname;
 				if($i == 10){
 					$i = 1;
 				}
