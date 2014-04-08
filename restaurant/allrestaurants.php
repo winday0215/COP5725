@@ -115,16 +115,24 @@ $(document).ready(function () {
 			oci_execute($stid);
 						
 			$i =1;
-			
+			echo "<hr>";
 			while (oci_fetch($stid)) {
 				if($i == 10){
 					$i = 1;
 				}
-				echo "<hr>";
-				echo "<ul class='price-list p2>'";
-				echo "<li><h5><a href='restaurant.php?RID=$rid'>$rname</a></h5><span><img src='images/$i.jpg' width='80' height='60'></span></li><br>";
-				echo "<li>$street, $city, $state, $zipcode</li>";
-				echo "<li>Price: ";
+				
+				echo "<ul id='review-list' class='wrapper'>";
+				echo "<li>";
+				//display pic
+				echo "<div class='summary-left float-left'>
+							<img class='summary-pic' src='images/$i.jpg' alt=''>
+					 </div>";
+				//display restaurant name
+				//add review button direct to review.php
+				echo "<div class='wrapper review-summary'>
+							<span class='float-right'><a href='review.php?RID=$rid&NAME=$rname&USER=1'><input type='button' class='button-orange' value='Add Review'/></a></span>
+							<h4 class='summary-title float-left'><a href='restaurant.php?RID=$rid'>$rname</a></h4><div class='afford'>Price: <span class='gold'>";
+				//display price range
 				if($pricerange == 1){
 					echo "\$";
 				}
@@ -140,46 +148,23 @@ $(document).ready(function () {
 				else if($pricerange == 5){
 					echo "\$\$\$\$\$";
 				}
-				echo "</li>";
-				echo "<li>Rating: ";
-				if (ceil($rating) == 5){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
+				echo "</span></div>";
+				
+				//dispaly rating
+				$rating = ceil($rating);
+				if($rating == 0){
+					echo "<p>No Ratings</p>";
 				}
-				if (ceil($rating) == 4){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
+				else {
+					echo "<p><img src='images/star_0";
+					echo $rating.".png' alt=''/><span class='review-count'></span></p>";
 				}
-				if (ceil($rating) == 3){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-				}
-				if (ceil($rating) == 2){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-				}
-				if (ceil($rating) == 1){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-				}
-				if (ceil($rating) == 0){
-					echo "No Ratings";
-				}
+				
+				//display address
+				echo "<div class='most-recent float-left'><h4>Address: </h4></div>";
+				echo "<p><span></span>$street, $city, $state, $zipcode<a href='restaurant.php?RID=$rid' class='float-right'>Read Details...</a></p>";
+				
+				echo "</div>";
 				echo "</li>";
 				echo "</ul>";
 				$i++;
@@ -206,15 +191,18 @@ $(document).ready(function () {
 			else if($SearchBy == 'Zipcode'){
 				
 				//calculate nearby restaurants by longitude and latitude assigned to target zipcode with 5 miles range
-				$sql = "select r.rid,r.rname,r.street, r.city, r.state, r.zipcode, r.pricerange, avg(ra.rating) as rating from restaurant r, rates ra
-where r.RID=ra.RID AND r.zipcode IN 
-(
-select z1.zip from zipcode z1, zipcode z2
-Where z2.zip = '$SearchPara' AND
-SDO_WITHIN_DISTANCE(z1.GEO, z2.GEO, 'distance=10 unit=mile')='TRUE'
-)
-GROUP BY r.rid,r.rname, r.street, r.city, r.state, r.zipcode, r.pricerange 
-order by r.zipcode ASC";
+				$sql = "SELECT rs.rid, rs.rname, rs.street, rs.city, 
+			rs.state, rs.zipcode, rs.pricerange, rs.distance, avg(ra.rating) as RATING
+				FROM 
+        (select r.rid, r.rname, r.zipcode, r.street, r.city, r.state, r.pricerange,
+				SDO_GEOM.SDO_DISTANCE(z1.GEO, z2.GEO, 0.5,'unit=mile') distance
+				FROM zipcode z1, zipcode z2, restaurant r
+				Where r.zipcode=z1.zip AND z2.zip = '$SearchPara' AND
+				SDO_WITHIN_DISTANCE(z1.GEO, z2.GEO, 'distance=10 unit=mile')='TRUE'
+				order by distance ASC) rs, rates ra
+				Where rs.rid=ra.rid
+				GROUP BY rs.rid, rs.rname, rs.street, rs.city,rs.state, rs.zipcode, rs.pricerange, rs.distance
+				ORDER BY rs.distance ASC";
 			}
 			else if($SearchBy == 'RestaurantName'){
 				$SearchPara = strtoupper($SearchPara);
@@ -237,21 +225,34 @@ order by r.zipcode ASC";
 			oci_define_by_name($stid1, 'STATE',$state);
 			oci_define_by_name($stid1, 'ZIPCODE',$zipcode);
 			oci_define_by_name($stid1, 'PRICERANGE',$pricerange);
+			if($SearchBy == 'Zipcode'){
+				oci_define_by_name($stid1, 'DISTANCE',$distance);
+			}
 			oci_define_by_name($stid1, 'RATING', $rating);
 			oci_execute($stid1);
 			
 			$i =1;
 			
+			if($SearchBy == 'Zipcode'){
+				echo "Restaurants Within 10 Miles of ".$SearchPara;
+			}
 			while (oci_fetch($stid1)) {
 			//echo $rname;
 				if($i == 10){
 					$i = 1;
 				}
-				echo "<hr>";
-				echo "<ul class='price-list p2>'";
-				echo "<li><h5><a href='restaurant.php?RID=$rid'>$rname</a></h5><span><img src='images/$i.jpg' width='80' height='60'></span></li><br>";
-				echo "<li>$street, $city, $state, $zipcode</li>";
-				echo "<li>Price: ";
+				echo "<ul id='review-list' class='wrapper'>";
+				echo "<li>";
+				//display pic
+				echo "<div class='summary-left float-left'>
+							<img class='summary-pic' src='images/$i.jpg' alt=''>
+					 </div>";
+				//display restaurant name
+				//add review button direct to review.php
+				echo "<div class='wrapper review-summary'>
+							<span class='float-right'><a href='review.php?RID=$rid&NAME=$rname&USER=1'><input type='button' class='button-orange' value='Add Review'/></a></span>
+							<h4 class='summary-title float-left'><a href='restaurant.php?RID=$rid'>$rname</a></h4><div class='afford'>Price: <span class='gold'>";
+				//display price range
 				if($pricerange == 1){
 					echo "\$";
 				}
@@ -267,46 +268,28 @@ order by r.zipcode ASC";
 				else if($pricerange == 5){
 					echo "\$\$\$\$\$";
 				}
-				echo "</li>";
-				echo "<li>Rating: ";
-				if (ceil($rating) == 5){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
+				echo "</span></div>";
+				
+				//dispaly rating
+				$rating = ceil($rating);
+				if($rating == 0){
+					echo "<p>No Ratings</p>";
 				}
-				if (ceil($rating) == 4){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
+				else {
+					echo "<p><img src='images/star_0";
+					echo $rating.".png' alt=''/><span class='review-count'></span></p>";
 				}
-				if (ceil($rating) == 3){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
+				
+				//display address
+				echo "<div class='most-recent float-left'><h4>Address: </h4></div>";
+				echo "<p><span></span>$street, $city, $state, $zipcode<a href='restaurant.php?RID=$rid' class='float-right'>Read Details...</a></p>";
+				
+				//if search by zipcode, display distance as well
+				if($SearchBy == 'Zipcode'){
+					echo "<div class='most-recent float-left'><h4>Distance: </h4></div>";
+					echo "<p><span></span> ".round($distance,4)." Miles</p>";
 				}
-				if (ceil($rating)== 2){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-				}
-				if (ceil($rating) == 1){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-				}
-				if (ceil($rating) == 0){
-					echo "No Ratings";
-				}
+				echo "</div>";
 				echo "</li>";
 				echo "</ul>";
 				$i++;

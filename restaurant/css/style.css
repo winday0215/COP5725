@@ -204,6 +204,60 @@ h2 span {
 #page1 h2 {
 	margin-bottom:9px;
 }
+
+h3 {
+	font-size:24px;
+	line-height:2em;
+	color:#404040;
+	font-weight:normal;
+	letter-spacing:-1px;
+	margin-bottom:5px;
+}
+h5 {
+	margin-bottom:2px;
+}
+h6 {
+	color:#769e02;
+}
+
+/********* Reusable******************/
+.float-left {float:left;}
+.float-right {float: right;}
+.clear {clear: both;}
+.center {text-align:center;margin: 0 auto;}
+.wrapper { overflow: hidden; }
+
+/********Colors*******************/
+.gold{color:#9d7b06;}
+
+/*******Buttons******************/
+.button-orange {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-image: linear-gradient(#F3BA69 50%, #EF8E2F 50%);
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-color: #E6E6E6;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-style: solid;
+    border-bottom-width: 0;
+    border-top-color: #E6E6E6;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top-style: solid;
+    border-top-width: 0;
+    box-shadow: 0 3px 0 0 #D27C28, 0 3px 8px rgba(0, 0, 0, 0.3);
+    color: #FFFFFF;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    text-shadow: 1px 1px 0 #7A7A7A;
+    vertical-align: top;
+}
+
 /***** menu *****/
 .menu {
 	padding:26px 10px 0 0;
@@ -281,20 +335,7 @@ h2 span {
 	width:100%;
 	background: 217px 0 repeat-y;
 }
-h3 {
-	font-size:24px;
-	line-height:2em;
-	color:#404040;
-	font-weight:normal;
-	letter-spacing:-1px;
-	margin-bottom:5px;
-}
-h5 {
-	margin-bottom:2px;
-}
-h6 {
-	color:#769e02;
-}
+
 .border-bot {
 	width:100%;
 	padding-bottom:20px;

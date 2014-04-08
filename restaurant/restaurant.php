@@ -73,47 +73,55 @@ $(document).ready(function () {
 <section id="content">
   <div class="main">
     <div class="container">
-      <h3 class="prev-indent-bot">Restaurant List</h3>
         <div>
-        <?php
-            
-            $connection = oci_connect($username = 'jing',
+                <?php
+        $rid = $_GET['RID'];
+        //check if it's a search result
+        $connection = oci_connect($username = 'jing',
                           $password = 'spring123456',
                           $connection_string = '//oracle.cise.ufl.edu/orcl');
                           
             //choose restaurants, calculate average rating and display by averate rating DESC order
-            //
-			$stid = oci_parse($connection, 
-			'SELECT r.rid, r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange, avg(ra.rating) as rating
-			FROM restaurant r, rates ra 
-      WHERE r.rid = ra.rid 
-			GROUP BY r.rid,r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange 
-      order by avg(ra.rating) DESC');
-			
-			//this define must be done before oci_execute
-			oci_define_by_name($stid, 'RID',$rid);
-			oci_define_by_name($stid, 'RNAME',$rname);
-			oci_define_by_name($stid, 'STREET',$street);
-			oci_define_by_name($stid, 'CITY',$city);
-			oci_define_by_name($stid, 'STATE',$state);
-			oci_define_by_name($stid, 'ZIPCODE',$zipcode);
-			oci_define_by_name($stid, 'PRICERANGE',$pricerange);
-			oci_define_by_name($stid, 'RATING', $rating);
-			oci_execute($stid);
-						
-			$i =1;
-			$rating = ceil($rating);
-			while (oci_fetch($stid)) {
-				if($i == 10){
-					$i = 1;
-				}
-				echo "<hr>";
-				echo "<ul class='price-list p2>'";
-				echo "<li><h5><a href='restarurant.php?RID=$rid'>$rname</a></h5><span><img src='images/$i.jpg' width='80' height='60'></span></li><br>";
-				echo "<li>$street, $city, $state, $zipcode</li>";
-				echo "<li>Price: ";
+        $sql = "SELECT r.rid, r.rname, r.street, r.city, 
+				r.state, r.zipcode, r.pricerange, r.openhrs, r.closehrs, r.wifi, r.phone, r.url, avg(ra.rating) as rating
+				FROM restaurant r, rates ra 
+				WHERE r.rid = ra.rid AND r.rid = $rid
+				GROUP BY r.rid,r.rname, r.street, r.city, 
+				r.state, r.zipcode, r.pricerange, r.openhrs, r.closehrs, r.wifi, r.phone, r.url";
+				
+		$stid = oci_parse($connection,$sql);
+		oci_define_by_name($stid, 'RNAME',$rname);
+		oci_define_by_name($stid, 'STREET',$street);
+		oci_define_by_name($stid, 'CITY',$city);
+		oci_define_by_name($stid, 'STATE',$state);
+		oci_define_by_name($stid, 'ZIPCODE',$zipcode);
+		oci_define_by_name($stid, 'PRICERANGE',$pricerange);
+		oci_define_by_name($stid, 'OPENHRS',$open);
+		oci_define_by_name($stid, 'CLOSEHRS',$close);
+		oci_define_by_name($stid, 'WIFI',$wifi);
+		oci_define_by_name($stid, 'PHONE',$phone);
+		oci_define_by_name($stid, 'URL',$url);
+		oci_define_by_name($stid, 'RATING', $rating);
+		oci_execute($stid);
+		
+		
+		//xxxx
+		$i =1;
+		while (oci_fetch($stid)){
+			echo "<h3 class='prev-indent-bot'>$rname</a></h3>";
+			echo "<hr>";
+			echo "<ul id='review-list' class='wrapper'>";
+				echo "<li>";
+				//display pic
+				echo "<div class='summary-left float-left'>
+							<img class='summary-pic' src='images/$i.jpg' alt=''>
+					 </div>";
+				//display restaurant name
+				//add review button direct to review.php
+				echo "<div class='wrapper review-summary'>
+							<span class='float-right'><a href='review.php?RID=$rid&NAME=$rname&USER=1'><input type='button' class='button-orange' value='Add Review'/></a></span>
+							<div class='afford'>Price: <span class='gold'>";
+				//display price range
 				if($pricerange == 1){
 					echo "\$";
 				}
@@ -129,51 +137,85 @@ $(document).ready(function () {
 				else if($pricerange == 5){
 					echo "\$\$\$\$\$";
 				}
-				echo "</li>";
-				echo "<li>Rating: ";
-				if ($rating == 5){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
+				echo "</span></div>";
+				
+				//dispaly rating
+				
+				$rating = ceil($rating);
+				if($rating == 0){
+					echo "<p>No Ratings</p>";
 				}
-				if ($rating == 4){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
+				else {
+					echo "<p><img src='images/star_0";
+					echo $rating.".png' alt=''/><span class='review-count'></span></p>";
 				}
-				if ($rating == 3){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
+				
+				//display address
+				echo "<div class='most-recent float-left'><h4>Address: </h4></div>";
+				echo "<p><span></span>$street, $city, $state, $zipcode";
+				if($url != null){
+					echo "<a href='".$url."' class='float-right'>Go To WebSite</a>";
 				}
-				if ($rating == 2){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
+				echo "</p>";
+				
+				//display phone number
+				echo "<div class='most-recent float-left'><h4>Phone: </h4></div>";
+				echo "<p><span></span>$phone</p>";
+				
+				//open and close time
+				echo "<div class='most-recent float-left'><h4>Today: </h4></div>";
+				echo "<p><span></span>".$open. " - ". $close."</p>";
+				
+				if($wifi == 'Y'){
+					echo "<div class='most-recent float-left'><h4>WIFI Available</h4></div>";
 				}
-				if ($rating == 1){
-					echo "<img src='images/gold_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-					echo "<img src='images/gray_star.png' width='15' height='15'>";
-				}
+				
+				
+				echo "</div>";
 				echo "</li>";
 				echo "</ul>";
-				$i++;
 			}
-
-//
-// VERY important to close Oracle Database Connections and free statements!
-//
+		
+		//xxx
+		
+		echo "<br><br><br>";
+		
+		
+		$sql = "select u.FNAME, u.city, u.STATE, ra.rating, r.content from review r, useraccount u, rates ra
+					where r.RID=$rid AND r.USERID = u.USERID AND r.USERID= ra.USERID AND r.RID=ra.RID";
+			//echo $sql;
+		$stid = oci_parse($connection,$sql);
+		oci_define_by_name($stid, 'FNAME',$fname);
+		oci_define_by_name($stid, 'CITY',$ucity);
+		oci_define_by_name($stid, 'STATE',$ustate);
+		oci_define_by_name($stid, 'RATING',$urating);
+		oci_define_by_name($stid, 'CONTENT',$reviewcontent);
+		oci_execute($stid);
+			
+		
+		//&&&&
+		echo "<h3 class='prev-indent-bot'>Recommended Reviews</h3>";
+		echo "<hr>";
+		while(oci_fetch($stid)){
+			
+			echo "<ul id='review-list' class='wrapper'>";
+			echo "<li>";	
+			echo "<div class='summary-left float-left'>
+							<p><b><i>".$fname."</i></b></p>
+							<p>$ucity, $ustate</p>
+				  </div>";			
+			
+	
+			echo "<p><img src='images/star_0";
+			echo $urating.".png' alt=''/><span class='review-count'></span></p>";
+				
+			echo "<p>".$reviewcontent."</p>";
+			
+			echo "</li>";
+			echo "</ul>";
+		}
+		//&&&&
+		
 		oci_free_statement($stid);
 		oci_close($connection);
             ?>         
