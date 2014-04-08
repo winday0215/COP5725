@@ -25,6 +25,9 @@ $(document).ready(function () {
 </script>
 <!--[if lt IE 9]><script type="text/javascript" src="js/html5.js"></script><![endif]-->
 </head>
+<?php
+	$uid = $_GET['USERID'];
+?>
 <body id="page2">
 <!--==============================header=================================-->
 <header>
@@ -70,47 +73,10 @@ $(document).ready(function () {
       <article class="col-1">
       	<div class="indent-left">
 			  <!--=================Sign In===================-->
-			  <h3 class="p1">Sign In</h3>
-			  <form id="signin-form" action="php/signin.php" method="post" enctype="multipart/form-data">
+			  <h3 class="p1">Account Settings >> Profile</h3>
+			  <form id="signin-form" name="updateprofile-form" action="php/updateprofile.php" method="post" enctype="multipart/form-data">
 				  <fieldset>
-					 <label><span class="text-form">UserName:</span>
-					  	<input name="username" type="text" />
-					 </label>
-					 <label><span class="text-form">Password:</span>
-					  	<input name="pwd" type="text" />
-					 </label>
-					 <label><span class="text-form"></span>
-					  	<a href="forgetpwd.html">Forget Password?</a>
-					 </label>
-					 <div class="wrapper">
-						 <div class="extra-wrap">
-						 <div class="clear"></div>
-                         <div class="buttons1"> <input type="submit" value="Submit"> </div>
-                     </div>
-                    </div>
-			      </fieldset>
-			   </form>
-      	</div>
-      </article>
-      <article class="col-2">
-      <!--=================Sign Up===================-->
-        <h3>Sign Up</h3>
-        <div class="wrapper">
-	        <h5>Don't have account? Sign up here!</h5>
-	        <form id="signup-form" action="php/signup.php" method="post" enctype="multipart/form-data">
-				  <fieldset>
-					 <label><span class="text-form">Email*:</span>
-					  	<input name="username" type="text" />
-					 </label>
-					 <label><span class="text-form">Verify Email*:</span>
-					  	<input name="username" type="text" />
-					 </label>
-					 <label><span class="text-form">Password*:</span>
-					  	<input name="pwd" type="text" />
-					 </label>
-					 <label><span class="text-form">Verify Password*:</span>
-					  	<input name="pwd" type="text" />
-					 </label>
+				  	 <input type="hidden" id="uid" name="uid" value="<?php echo $uid;?>"/>
 					  <label><span class="text-form">First Name*:</span>
 					  	<input name="firstname" type="text" />
 					 </label>
@@ -196,7 +162,14 @@ $(document).ready(function () {
                     </div>
 			      </fieldset>
 			   </form>
+      	</div>
+      </article>
+      <article class="col-2">
+      <!--====================================-->
+        <div class="wrapper">
+	        
         </div>
+      </article>
     </div>
   </div>
 </section>
