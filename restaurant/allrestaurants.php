@@ -96,12 +96,15 @@ $(document).ready(function () {
             //
 			$stid = oci_parse($connection, 
 			'SELECT r.rid, r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange, avg(ra.rating) as rating
-			FROM restaurant r, rates ra 
-      WHERE r.rid = ra.rid 
+			r.state, r.zipcode, r.pricerange, res.rating, count(re.reviewid) as reviews
+			FROM 
+      (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra
+      WHERE r1.rid = ra.rid
+      GROUP BY r1.rid) res, review re, restaurant r
+      WHERE res.rid = re.rid AND res.rid = r.rid 
 			GROUP BY r.rid,r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange 
-      order by avg(ra.rating) DESC');
+			r.state, r.zipcode, r.pricerange, res.rating 
+      order by avg(res.rating) DESC');
 			
 			//this define must be done before oci_execute
 			oci_define_by_name($stid, 'RID',$rid);
@@ -111,6 +114,7 @@ $(document).ready(function () {
 			oci_define_by_name($stid, 'STATE',$state);
 			oci_define_by_name($stid, 'ZIPCODE',$zipcode);
 			oci_define_by_name($stid, 'PRICERANGE',$pricerange);
+			oci_define_by_name($stid, 'REVIEWS',$numreview);
 			oci_define_by_name($stid, 'RATING', $rating);
 			oci_execute($stid);
 						
@@ -151,13 +155,13 @@ $(document).ready(function () {
 				echo "</span></div>";
 				
 				//dispaly rating
-				$rating = ceil($rating);
+				$rating = round($rating);
 				if($rating == 0){
 					echo "<p>No Ratings</p>";
 				}
 				else {
 					echo "<p><img src='images/star_0";
-					echo $rating.".png' alt=''/><span class='review-count'></span></p>";
+					echo $rating.".png' alt=''/><span class='review-count'>$numreview Reviews</span></p>";
 				}
 				
 				//display address
@@ -181,12 +185,15 @@ $(document).ready(function () {
 			//echo $SearchBy;
 			if($SearchBy == 'City'){
 				$sql = "SELECT r.rid, r.rname, r.street, r.city, 
-				r.state, r.zipcode, r.pricerange, avg(ra.rating) as rating
-				FROM restaurant r, rates ra 
-				WHERE r.rid = ra.rid AND r.city = '$SearchPara' 
-				GROUP BY r.rid,r.rname, r.street, r.city, 
-				r.state, r.zipcode, r.pricerange 
-				order by avg(ra.rating) DESC";
+			r.state, r.zipcode, r.pricerange, res.rating, count(re.reviewid) as reviews
+			FROM 
+      (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra
+      WHERE r1.rid = ra.rid
+      GROUP BY r1.rid) res, review re, restaurant r
+      WHERE res.rid = re.rid AND res.rid = r.rid AND r.city = '$SearchPara'
+			GROUP BY r.rid,r.rname, r.street, r.city, 
+			r.state, r.zipcode, r.pricerange, res.rating 
+      order by avg(res.rating) DESC";
 			}
 			else if($SearchBy == 'Zipcode'){
 				
@@ -207,12 +214,15 @@ $(document).ready(function () {
 			else if($SearchBy == 'RestaurantName'){
 				$SearchPara = strtoupper($SearchPara);
 				$sql = "SELECT r.rid, r.rname, r.street, r.city, 
-				r.state, r.zipcode, r.pricerange, avg(ra.rating) as rating
-				FROM restaurant r, rates ra 
-				WHERE r.rid = ra.rid AND UPPER(r.rname) LIKE '%$SearchPara%' 
-				GROUP BY r.rid,r.rname, r.street, r.city, 
-				r.state, r.zipcode, r.pricerange 
-				order by avg(ra.rating) DESC";
+			r.state, r.zipcode, r.pricerange, res.rating, count(re.reviewid) as reviews
+			FROM 
+      (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra
+      WHERE r1.rid = ra.rid
+      GROUP BY r1.rid) res, review re, restaurant r
+      WHERE res.rid = re.rid AND res.rid = r.rid AND UPPER(r.rname) LIKE '%$SearchPara%'
+			GROUP BY r.rid,r.rname, r.street, r.city, 
+			r.state, r.zipcode, r.pricerange, res.rating 
+      order by avg(res.rating) DESC";
 			}
 			//echo $sql;
 			$stid1 = oci_parse($connection, $sql);
@@ -224,6 +234,7 @@ $(document).ready(function () {
 			oci_define_by_name($stid1, 'CITY',$city);
 			oci_define_by_name($stid1, 'STATE',$state);
 			oci_define_by_name($stid1, 'ZIPCODE',$zipcode);
+			oci_define_by_name($stid1, 'REVIEWS',$numreview);
 			oci_define_by_name($stid1, 'PRICERANGE',$pricerange);
 			if($SearchBy == 'Zipcode'){
 				oci_define_by_name($stid1, 'DISTANCE',$distance);
@@ -236,6 +247,7 @@ $(document).ready(function () {
 			if($SearchBy == 'Zipcode'){
 				echo "Restaurants Within 10 Miles of ".$SearchPara;
 			}
+			echo "<hr>";
 			while (oci_fetch($stid1)) {
 			//echo $rname;
 				if($i == 10){
@@ -271,7 +283,7 @@ $(document).ready(function () {
 				echo "</span></div>";
 				
 				//dispaly rating
-				$rating = ceil($rating);
+				$rating = round($rating);
 				if($rating == 0){
 					echo "<p>No Ratings</p>";
 				}

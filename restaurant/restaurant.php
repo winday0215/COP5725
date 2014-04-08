@@ -83,11 +83,14 @@ $(document).ready(function () {
                           
             //choose restaurants, calculate average rating and display by averate rating DESC order
         $sql = "SELECT r.rid, r.rname, r.street, r.city, 
-				r.state, r.zipcode, r.pricerange, r.openhrs, r.closehrs, r.wifi, r.phone, r.url, avg(ra.rating) as rating
-				FROM restaurant r, rates ra 
-				WHERE r.rid = ra.rid AND r.rid = $rid
-				GROUP BY r.rid,r.rname, r.street, r.city, 
-				r.state, r.zipcode, r.pricerange, r.openhrs, r.closehrs, r.wifi, r.phone, r.url";
+			r.state, r.zipcode, r.pricerange,r.openhrs, r.closehrs, r.wifi, r.url, res.rating, count(re.reviewid) as reviews
+			FROM 
+      (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra
+      WHERE r1.rid = ra.rid
+      GROUP BY r1.rid) res, review re, restaurant r
+      WHERE res.rid = re.rid AND res.rid = r.rid  AND r.rid = $rid
+			GROUP BY r.rid, r.rname, r.street, r.city, 
+			r.state, r.zipcode, r.pricerange,r.openhrs, r.closehrs, r.wifi, r.url, res.rating";
 				
 		$stid = oci_parse($connection,$sql);
 		oci_define_by_name($stid, 'RNAME',$rname);
@@ -101,6 +104,7 @@ $(document).ready(function () {
 		oci_define_by_name($stid, 'WIFI',$wifi);
 		oci_define_by_name($stid, 'PHONE',$phone);
 		oci_define_by_name($stid, 'URL',$url);
+		oci_define_by_name($stid, 'REVIEWS',$numreview);
 		oci_define_by_name($stid, 'RATING', $rating);
 		oci_execute($stid);
 		
@@ -141,13 +145,13 @@ $(document).ready(function () {
 				
 				//dispaly rating
 				
-				$rating = ceil($rating);
+				$rating = round($rating);
 				if($rating == 0){
 					echo "<p>No Ratings</p>";
 				}
 				else {
 					echo "<p><img src='images/star_0";
-					echo $rating.".png' alt=''/><span class='review-count'></span></p>";
+					echo $rating.".png' alt=''/><span class='review-count'>$numreview Reviews</span></p>";
 				}
 				
 				//display address
