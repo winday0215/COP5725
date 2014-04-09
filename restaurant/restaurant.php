@@ -45,7 +45,7 @@ $(document).ready(function () {
       (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra
       WHERE r1.rid = ra.rid
       GROUP BY r1.rid) res, review re, restaurant r
-      WHERE res.rid = re.rid AND res.rid = r.rid  AND r.rid = 95
+      WHERE res.rid = re.rid AND res.rid = r.rid  AND r.rid = $rid
 			GROUP BY r.rid, r.rname, r.street, r.city, 
 			r.state, r.zipcode, r.pricerange,r.openhrs, r.closehrs, r.wifi, r.phone, r.url, res.rating";
 				
