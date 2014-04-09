@@ -24,6 +24,8 @@ if (!isset ($_SESSION['user']))
 		i want user in session as userid in useraccount database, not email. Because
 		other tables use userid, not email. can you modify this?
 		
+		I'm not able to get what you want. 'user' is the name of the session. Here we are logging in using emailid, right? Please feel free to edit as you deem necessary. Do tell in detail if you want us to change as we can't understand this. It is just for logging in. Session is still user.
+		
 		***************************/
 		
 		$_SESSION['user']=$id;
@@ -64,15 +66,17 @@ if (!isset ($_SESSION['user']))
 		
 		here, we need to redirect to index.php
 		
+		Done that but please read above comment
+		
 		***************************/
-				header("Location: index1.html");
+				header("Location: index.php");
 			}
 			
 		}	
 		else
 		{ 
 			//If did not submit, return to original index.html without signin
-			header("Location: index.html");     
+			header("Location: index.php");     
 			exit;
 		}
 	}

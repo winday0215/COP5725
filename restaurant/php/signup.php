@@ -4,8 +4,9 @@
 
 no session start here,
 session only start when sign in
+/OK
 ***************/
-session_start();
+//session_start();
 
 $valid=false;
 $connection = oci_connect($username = 'jing',
@@ -42,8 +43,10 @@ if (!isset ($_SESSION['user']))
 		/**************
 
 no any session info  when sign up
+
+I think you mean no need of session here, so commenting it out
 ***************/
-		$_SESSION['user']=$user;
+		//$_SESSION['user']=$user;
 		
 		if(empty($user) || empty($fname) || empty($lname) ||empty($pass) || empty($city) || empty($state)){ $valid = false; }
 		if($valid == true)
@@ -57,13 +60,20 @@ no any session info  when sign up
 			}
 			else
 			{	
-				//take userid as auto increment column so use default
 				
 				/*************
 				query the largest number in userid field at first
 				then add 1 as the new userid
+				
+				Done using useridm for max value
 				****************/
-				$sql = "INSERT into useraccount values(DEFAULT,'$pass','$fname','$lname','$iurl','$street','$zip','$user','$gen','$date','$level','$usersince','$city','$state')";
+				$sql="Select MAX(userid) AS useridm from useraccount"
+				$query = oci_parse($connection,$sql);
+				oci_define_by_name($query, 'useridm',$useridm);
+				oci_execute($query);
+				$useridm=$useridm+1;
+				
+				$sql = "INSERT into useraccount values('$useridm','$pass','$fname','$lname','$iurl','$street','$zip','$user','$gen','$date','$level','$usersince','$city','$state')";
 				$query = oci_parse($connection,$sql);
 				oci_execute($query);
 							
@@ -78,19 +88,25 @@ no any session info  when sign up
 				  
 				  /***************
 				  no any session or info  when sign up
+				  
+				  Commenting it out
 				  *******************/
-				  session_start();
+				  //session_start();
 				  
 				  /***************
 				  set cookie with userid, userid is unique
-				  *******************/
-				  setcookie("user",$name, time()+3600);
-				  //After signup user sees new index.html page as he is logged in, so sees logout and Logged In: UserName
 				  
+				  Done
+				  *******************/
+				  setcookie("user",$useridm, time()+3600);
+				  				  
 				  /***************
 				  popup an alert window, tell user he has successfully signed up, let him use this info to login, then go to signin.html
+				  
+				  OK
 				  *******************/
-				  header("Location: index1.php");
+				  echo "<script type='text/javascript'>alert('You have successfully signed up!!! You may login using your credentials now.')</script>";
+				  header("Location: signin.html");
 				}
 			}		
 		}
@@ -103,6 +119,6 @@ no any session info  when sign up
 }
 else
 { 
-echo "<meta http-equiv='refresh' content='0;index.php'>";
+echo "<meta http-equiv='refresh' content='0;signin.html'>";
 }
 ?>
