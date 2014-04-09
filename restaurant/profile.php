@@ -34,7 +34,7 @@ $(document).ready(function () {
   <div class="row-top">
     <div class="main">
       <div class="wrapper">
-       <h1><a href="index.html">Kravings<span>.com</span></a></h1>
+       <h1><a href="index.php">Kravings<span>.com</span></a></h1>
         <nav>
           <ul class="menu">
           	<li>      
@@ -49,7 +49,7 @@ $(document).ready(function () {
 			  		<button name="searchbutton" id="searchbutton">Search</button> 
 			  	</form>
       		</li>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="index.php">Home</a></li>
             <li><a href="allrestaurants.php">Restaurants</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li><a href="signin.html">SignIn/SignUp </a></li>

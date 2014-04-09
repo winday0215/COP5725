@@ -29,51 +29,8 @@ $(document).ready(function () {
     });
 });
 </script>
-<!--[if lt IE 9]><script type="text/javascript" src="js/html5.js"></script><![endif]-->
-</head>
-<body id="page3">
-<!--==============================header=================================-->
-<header>
-  <div class="row-top">
-    <div class="main">
-      <div class="wrapper">
-        <h1><a href="index.html">Kravings<span>.com</span></a></h1>
-        <nav>
-          <ul class="menu">
-            <li>      
-          		<form action="search.php" method="post"> 
-			  		<input type="text" id="tb7" name="searchkey" id="searchkey"/>
-			  		<select name="searchtype" id="searchtype">
-				  		<option id="">--Search By--</option>
-				  		<option id="city">City</option>
-				  		<option id="name">Restaurant Name</option>
-				  		<option id="zipcode">Zipcode</option>
-			  		</select>
-			  		<button name="searchbutton" id="searchbutton">Search</button> 
-			  	</form>
-      		</li>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="allrestaurants.php">Restaurants</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="signin.html">SignIn/SignUp </a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </div>
-  <div class="row-bot">
-    <div class="row-bot-bg">
-      <div class="main">
-        <h2>Impressive Selection <span>for any Occasion</span></h2>
-      </div>
-    </div>
-  </div>
-</header>
-<!--==============================content================================-->
-<section id="content">
-  <div class="main">
-    <div class="container">
-        <div>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
+</script>
                 <?php
         $rid = $_GET['RID'];
         //check if it's a search result
@@ -107,19 +64,99 @@ $(document).ready(function () {
 		oci_define_by_name($stid, 'REVIEWS',$numreview);
 		oci_define_by_name($stid, 'RATING', $rating);
 		oci_execute($stid);
-		
-		
-		//xxxx
+				//xxxx
 		$i =1;
 		while (oci_fetch($stid)){
-			echo "<h3 class='prev-indent-bot'>$rname</a></h3>";
-			echo "<hr>";
-			echo "<ul id='review-list' class='wrapper'>";
+	     // Get lat and long by address         
+	        $address = $street.",".$city.",".$state.",".$zipcode; // Google HQ
+	        //echo $address;
+	        $prepAddr = str_replace(' ','+',$address);
+	        $prepAddr = str_replace('#','%23',$prepAddr);
+	        $geocode=file_get_contents('http://maps.google.com/maps/api/geocode/json?address='.$prepAddr.'&sensor=false');
+	        $output= json_decode($geocode);
+	        $latitude = $output->results[0]->geometry->location->lat;
+	        $longitude = $output->results[0]->geometry->location->lng;
+	        //echo $latitude;
+	        //echo $longitude;
+?>
+<script>
+		function initialize()
+		{
+		var myLatlng = new google.maps.LatLng(<?php echo $latitude?>,<?php echo $longitude?>);
+		var mapProp = {
+		  center:myLatlng,
+		  zoom:15,
+		  mapTypeId:google.maps.MapTypeId.ROADMAP
+		  };
+		  
+		var map=new google.maps.Map(document.getElementById('googleMap')
+		  ,mapProp);
+		  
+		var marker=new google.maps.Marker({
+		  position:myLatlng,
+		  map: map,
+		  });
+		
+		
+		}
+		google.maps.event.addDomListener(window, 'load', initialize);
+		</script>
+<!--[if lt IE 9]><script type="text/javascript" src="js/html5.js"></script><![endif]-->
+</head>
+<body id="page3">
+<!--==============================header=================================-->
+<header>
+  <div class="row-top">
+    <div class="main">
+      <div class="wrapper">
+        <h1><a href="index.php">Kravings<span>.com</span></a></h1>
+        <nav>
+          <ul class="menu">
+            <li>      
+          		<form action="search.php" method="post"> 
+			  		<input type="text" id="tb7" name="searchkey" id="searchkey"/>
+			  		<select name="searchtype" id="searchtype">
+				  		<option id="">--Search By--</option>
+				  		<option id="city">City</option>
+				  		<option id="name">Restaurant Name</option>
+				  		<option id="zipcode">Zipcode</option>
+			  		</select>
+			  		<button name="searchbutton" id="searchbutton">Search</button> 
+			  	</form>
+      		</li>
+            <li><a href="index.php">Home</a></li>
+            <li><a href="allrestaurants.php">Restaurants</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="signin.html">SignIn/SignUp </a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <div class="row-bot">
+    <div class="row-bot-bg">
+      <div class="main">
+        <h2>Impressive Selection <span>for any Occasion</span></h2>
+      </div>
+    </div>
+  </div>
+</header>
+<!--==============================content================================-->
+<section id="content">
+  <div class="main">
+    <div class="container">
+        <div>		
+		<?php
+				echo "<h3 class='prev-indent-bot'>$rname</a></h3>";
+				echo "<hr>";
+				echo "<ul id='review-list' class='wrapper'>";
 				echo "<li>";
-				//display pic
-				echo "<div class='summary-left float-left'>
-							<img class='summary-pic' src='images/$i.jpg' alt=''>
-					 </div>";
+				?>
+				<!--display google map-->
+				<div class="map-wrapper float-left">
+				<div id="googleMap" style="width:300px;height:200px;"></div>
+				</div>
+		<?php
 				//display restaurant name
 				//add review button direct to review.php
 				echo "<div class='wrapper review-summary'>
@@ -155,20 +192,20 @@ $(document).ready(function () {
 				}
 				
 				//display address
-				echo "<div class='most-recent float-left'><h4>Address: </h4></div>";
-				echo "<p><span></span>$street, $city, $state, $zipcode";
+				//echo "<div class='most-recent float-left'><h4>Address: </h4></div>";
+				echo "<p><span><b>Address: </b></span>$street, $city, $state, $zipcode";
 				if($url != null){
 					echo "<a href='".$url."' class='float-right'>Go To WebSite</a>";
 				}
 				echo "</p>";
 				
 				//display phone number
-				echo "<div class='most-recent float-left'><h4>Phone: </h4></div>";
-				echo "<p><span></span>$phone</p>";
+				//echo "<div class='most-recent float-left'><h4>Phone: </h4></div>";
+				echo "<p><span><b>Phone: </b></span>$phone</p>";
 				
 				//open and close time
-				echo "<div class='most-recent float-left'><h4>Today: </h4></div>";
-				echo "<p><span></span>".$open. " - ". $close."</p>";
+				//echo "<div class='most-recent float-left'><h4>Today: </h4></div>";
+				echo "<p><span><b>Today: </b></span>".$open. " - ". $close."</p>";
 				
 				if($wifi == 'Y'){
 					echo "<div class='most-recent float-left'><h4>WIFI Available</h4></div>";
