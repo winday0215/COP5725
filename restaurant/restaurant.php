@@ -39,15 +39,15 @@ $(document).ready(function () {
                           $connection_string = '//oracle.cise.ufl.edu/orcl');
                           
             //choose restaurants, calculate average rating and display by averate rating DESC order
-        $sql = "SELECT r.rid, r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange,r.openhrs, r.closehrs, r.wifi, r.url, res.rating, count(re.reviewid) as reviews
+        $sql = "SELECT r.rid, r.rname, r.street, r.city,
+			r.state, r.zipcode, r.pricerange,r.openhrs, r.closehrs, r.wifi, r.phone, r.url, res.rating, count(re.reviewid) as reviews
 			FROM 
       (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra
       WHERE r1.rid = ra.rid
       GROUP BY r1.rid) res, review re, restaurant r
-      WHERE res.rid = re.rid AND res.rid = r.rid  AND r.rid = $rid
+      WHERE res.rid = re.rid AND res.rid = r.rid  AND r.rid = 95
 			GROUP BY r.rid, r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange,r.openhrs, r.closehrs, r.wifi, r.url, res.rating";
+			r.state, r.zipcode, r.pricerange,r.openhrs, r.closehrs, r.wifi, r.phone, r.url, res.rating";
 				
 		$stid = oci_parse($connection,$sql);
 		oci_define_by_name($stid, 'RNAME',$rname);
