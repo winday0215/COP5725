@@ -48,6 +48,7 @@ $(document).ready(function () {
 				  		<option id="city">City</option>
 				  		<option id="name">Restaurant Name</option>
 				  		<option id="zipcode">Zipcode</option>
+				  		<option id="cuisine">Cuisine</option>
 			  		</select>
 			  		<button name="searchbutton" id="searchbutton">Search</button> 
 			  	</form>
@@ -96,14 +97,14 @@ $(document).ready(function () {
             //
 			$stid = oci_parse($connection, 
 			'SELECT r.rid, r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange, res.rating, count(re.reviewid) as reviews
+			r.state, r.zipcode, r.pricerange, c.cuisinename, res.rating, count(re.reviewid) as reviews
 			FROM 
       (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra
       WHERE r1.rid = ra.rid
-      GROUP BY r1.rid) res, review re, restaurant r
-      WHERE res.rid = re.rid AND res.rid = r.rid 
+      GROUP BY r1.rid) res, review re, restaurant r, cuisine c, resc rc
+      WHERE res.rid = re.rid AND res.rid = r.rid AND r.rid = rc.rid AND rc.cuisineid = c.cuisineid
 			GROUP BY r.rid,r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange, res.rating 
+			r.state, r.zipcode, r.pricerange, c.cuisinename, res.rating 
       order by avg(res.rating) DESC');
 			
 			//this define must be done before oci_execute
@@ -115,6 +116,7 @@ $(document).ready(function () {
 			oci_define_by_name($stid, 'ZIPCODE',$zipcode);
 			oci_define_by_name($stid, 'PRICERANGE',$pricerange);
 			oci_define_by_name($stid, 'REVIEWS',$numreview);
+			oci_define_by_name($stid, 'CUISINENAME',$cuisinename);
 			oci_define_by_name($stid, 'RATING', $rating);
 			oci_execute($stid);
 						
@@ -135,7 +137,7 @@ $(document).ready(function () {
 				//add review button direct to review.php
 				echo "<div class='wrapper review-summary'>
 							<span class='float-right'><a href='review.php?RID=$rid&NAME=$rname&USER=1'><input type='button' class='button-orange' value='Add Review'/></a></span>
-							<h4 class='summary-title float-left'><a href='restaurant.php?RID=$rid'>$rname</a></h4><div class='afford'>Price: <span class='gold'>";
+							<h4 class='summary-title float-left'><a href='restaurant.php?RID=$rid'>$rname</a></h4><div class='afford'><span class='gold'>";
 				//display price range
 				if($pricerange == 1){
 					echo "\$";
@@ -152,7 +154,7 @@ $(document).ready(function () {
 				else if($pricerange == 5){
 					echo "\$\$\$\$\$";
 				}
-				echo "</span></div>";
+				echo " ."."</span><span>"." "."$cuisinename</span></div>";
 				
 				//dispaly rating
 				$rating = round($rating);
@@ -185,43 +187,56 @@ $(document).ready(function () {
 			//echo $SearchBy;
 			if($SearchBy == 'City'){
 				$sql = "SELECT r.rid, r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange, res.rating, count(re.reviewid) as reviews
+			r.state, r.zipcode, r.pricerange, c.cuisinename, res.rating, count(re.reviewid) as reviews
 			FROM 
       (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra
       WHERE r1.rid = ra.rid
-      GROUP BY r1.rid) res, review re, restaurant r
-      WHERE res.rid = re.rid AND res.rid = r.rid AND r.city = '$SearchPara'
+      GROUP BY r1.rid) res, review re, restaurant r, CUISINE c, RESC rc
+      WHERE res.rid = re.rid AND res.rid = r.rid AND r.rid = rc.rid AND rc.cuisineid = c.cuisineid AND r.city = '$SearchPara'
 			GROUP BY r.rid,r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange, res.rating 
+			r.state, r.zipcode, r.pricerange, c.cuisinename, res.rating 
       order by avg(res.rating) DESC";
 			}
 			else if($SearchBy == 'Zipcode'){
 				
 				//calculate nearby restaurants by longitude and latitude assigned to target zipcode with 5 miles range
 				$sql = "SELECT rs.rid, rs.rname, rs.street, rs.city, 
-			rs.state, rs.zipcode, rs.pricerange, rs.distance, avg(ra.rating) as RATING
+			rs.state, rs.zipcode, rs.pricerange, rs.distance, c.cuisinename, avg(ra.rating) as RATING
 				FROM 
         (select r.rid, r.rname, r.zipcode, r.street, r.city, r.state, r.pricerange,
 				SDO_GEOM.SDO_DISTANCE(z1.GEO, z2.GEO, 0.5,'unit=mile') distance
 				FROM zipcode z1, zipcode z2, restaurant r
 				Where r.zipcode=z1.zip AND z2.zip = '$SearchPara' AND
 				SDO_WITHIN_DISTANCE(z1.GEO, z2.GEO, 'distance=10 unit=mile')='TRUE'
-				order by distance ASC) rs, rates ra
-				Where rs.rid=ra.rid
-				GROUP BY rs.rid, rs.rname, rs.street, rs.city,rs.state, rs.zipcode, rs.pricerange, rs.distance
+				order by distance ASC) rs, rates ra, CUISINE c, RESC rc
+				Where rs.rid=ra.rid AND rs.rid = rc.RID AND rc.CUISINEID = c.CUISINEID
+				GROUP BY rs.rid, rs.rname, rs.street, rs.city,rs.state, rs.zipcode, rs.pricerange, rs.distance, c.cuisinename
 				ORDER BY rs.distance ASC";
 			}
 			else if($SearchBy == 'RestaurantName'){
 				$SearchPara = strtoupper($SearchPara);
 				$sql = "SELECT r.rid, r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange, res.rating, count(re.reviewid) as reviews
+			r.state, r.zipcode, r.pricerange, res.rating, c.cuisinename, count(re.reviewid) as reviews
 			FROM 
       (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra
       WHERE r1.rid = ra.rid
-      GROUP BY r1.rid) res, review re, restaurant r
-      WHERE res.rid = re.rid AND res.rid = r.rid AND UPPER(r.rname) LIKE '%$SearchPara%'
+      GROUP BY r1.rid) res, review re, restaurant r, cuisine c, resc rc
+      WHERE res.rid = re.rid AND res.rid = r.rid AND r.rid = rc.rid AND rc.cuisineid=c.cuisineid AND UPPER(r.rname) LIKE '%$SearchPara%'
 			GROUP BY r.rid,r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange, res.rating 
+			r.state, r.zipcode, r.pricerange, res.rating, c.cuisinename
+      order by avg(res.rating) DESC";
+			}
+			else if($SearchBy == 'Cuisine'){
+				$SearchPara = strtoupper($SearchPara);
+				$sql = "SELECT r.rid, r.rname, r.street, r.city, 
+			r.state, r.zipcode, r.pricerange, res.rating, c.cuisinename, count(re.reviewid) as reviews
+			FROM 
+      (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra
+      WHERE r1.rid = ra.rid
+      GROUP BY r1.rid) res, review re, restaurant r, cuisine c, resc rc
+      WHERE res.rid = re.rid AND res.rid = r.rid AND r.rid = rc.rid AND rc.cuisineid=c.cuisineid AND UPPER(c.cuisinename) LIKE '%$SearchPara%'
+			GROUP BY r.rid,r.rname, r.street, r.city, 
+			r.state, r.zipcode, r.pricerange, res.rating, c.cuisinename
       order by avg(res.rating) DESC";
 			}
 			//echo $sql;
@@ -240,6 +255,7 @@ $(document).ready(function () {
 				oci_define_by_name($stid1, 'DISTANCE',$distance);
 			}
 			oci_define_by_name($stid1, 'RATING', $rating);
+			oci_define_by_name($stid1, 'CUISINENAME',$cuisinename);
 			oci_execute($stid1);
 			
 			$i =1;
@@ -263,7 +279,7 @@ $(document).ready(function () {
 				//add review button direct to review.php
 				echo "<div class='wrapper review-summary'>
 							<span class='float-right'><a href='review.php?RID=$rid&NAME=$rname&USER=1'><input type='button' class='button-orange' value='Add Review'/></a></span>
-							<h4 class='summary-title float-left'><a href='restaurant.php?RID=$rid'>$rname</a></h4><div class='afford'>Price: <span class='gold'>";
+							<h4 class='summary-title float-left'><a href='restaurant.php?RID=$rid'>$rname</a></h4><div class='afford'><span class='gold'>";
 				//display price range
 				if($pricerange == 1){
 					echo "\$";
@@ -280,7 +296,7 @@ $(document).ready(function () {
 				else if($pricerange == 5){
 					echo "\$\$\$\$\$";
 				}
-				echo "</span></div>";
+				echo " ."."</span><span>"." "."$cuisinename</span></div>";
 				
 				//dispaly rating
 				$rating = round($rating);

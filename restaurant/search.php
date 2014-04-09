@@ -19,4 +19,8 @@ if($Searchtype == 'Zipcode'){
 	header("Location: allrestaurants.php?SearchBy=$Searchtype&SearchPara=$SearchPara");
 	exit;
 }
+if($Searchtype == 'Cuisine'){
+	header("Location: allrestaurants.php?SearchBy=$Searchtype&SearchPara=$SearchPara");
+	exit;
+}
 ?>

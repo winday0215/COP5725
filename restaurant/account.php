@@ -48,6 +48,7 @@ $(document).ready(function () {
 				  		<option id="city">City</option>
 				  		<option id="name">Restaurant Name</option>
 				  		<option id="zipcode">Zipcode</option>
+				  		<option id="cuisine">Cuisine</option>
 			  		</select>
 			  		<button name="searchbutton" id="searchbutton">Search</button> 
 			  	</form>

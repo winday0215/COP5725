@@ -40,14 +40,14 @@ $(document).ready(function () {
                           
             //choose restaurants, calculate average rating and display by averate rating DESC order
         $sql = "SELECT r.rid, r.rname, r.street, r.city,
-			r.state, r.zipcode, r.pricerange,r.openhrs, r.closehrs, r.wifi, r.phone, r.url, res.rating, count(re.reviewid) as reviews
+			r.state, r.zipcode, r.pricerange,r.openhrs, r.closehrs, r.wifi, r.phone, r.url, c.cuisinename, res.rating, count(re.reviewid) as reviews
 			FROM 
       (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra
       WHERE r1.rid = ra.rid
-      GROUP BY r1.rid) res, review re, restaurant r
-      WHERE res.rid = re.rid AND res.rid = r.rid  AND r.rid = $rid
+      GROUP BY r1.rid) res, review re, restaurant r, cuisine c, resc rc
+      WHERE res.rid = re.rid AND res.rid = r.rid  AND r.rid = $rid AND r.rid = rc.rid AND rc.cuisineid = c.cuisineid
 			GROUP BY r.rid, r.rname, r.street, r.city, 
-			r.state, r.zipcode, r.pricerange,r.openhrs, r.closehrs, r.wifi, r.phone, r.url, res.rating";
+			r.state, r.zipcode, r.pricerange,r.openhrs, r.closehrs, r.wifi, r.phone, r.url, c.cuisinename, res.rating";
 				
 		$stid = oci_parse($connection,$sql);
 		oci_define_by_name($stid, 'RNAME',$rname);
@@ -61,6 +61,8 @@ $(document).ready(function () {
 		oci_define_by_name($stid, 'WIFI',$wifi);
 		oci_define_by_name($stid, 'PHONE',$phone);
 		oci_define_by_name($stid, 'URL',$url);
+		oci_define_by_name($stid, 'PHONE',$phone);
+		oci_define_by_name($stid, 'CUISINENAME',$cuisinename);
 		oci_define_by_name($stid, 'REVIEWS',$numreview);
 		oci_define_by_name($stid, 'RATING', $rating);
 		oci_execute($stid);
@@ -120,6 +122,7 @@ $(document).ready(function () {
 				  		<option id="city">City</option>
 				  		<option id="name">Restaurant Name</option>
 				  		<option id="zipcode">Zipcode</option>
+				  		<option id="cuisine">Cuisine</option>
 			  		</select>
 			  		<button name="searchbutton" id="searchbutton">Search</button> 
 			  	</form>
@@ -161,7 +164,7 @@ $(document).ready(function () {
 				//add review button direct to review.php
 				echo "<div class='wrapper review-summary'>
 							<span class='float-right'><a href='review.php?RID=$rid&NAME=$rname&USER=1'><input type='button' class='button-orange' value='Add Review'/></a></span>
-							<div class='afford'>Price: <span class='gold'>";
+							<div class='afford'><span class='gold'>";
 				//display price range
 				if($pricerange == 1){
 					echo "\$";
@@ -178,7 +181,7 @@ $(document).ready(function () {
 				else if($pricerange == 5){
 					echo "\$\$\$\$\$";
 				}
-				echo "</span></div>";
+				echo " ."."</span><span>"." "."$cuisinename</span></div>";
 				
 				//dispaly rating
 				

@@ -34,6 +34,7 @@
 				  		<option id="city">City</option>
 				  		<option id="rname">Restaurant Name</option>
 				  		<option id="zipcode">Zipcode</option>
+				  		<option id="cuisine">Cuisine</option>
 			  		</select>
 			  		<input type="submit" name="searchsubmit" value="Search" class="sub1"> 
 			  	</form>
