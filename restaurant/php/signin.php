@@ -18,7 +18,16 @@ if (!isset ($_SESSION['user']))
 		//If email is userid we can do accordingly
 		$id = $_POST['email'];
 		$password = $_POST['password'];
+		
+		/**************************
+		
+		i want user in session as userid in useraccount database, not email. Because
+		other tables use userid, not email. can you modify this?
+		
+		***************************/
+		
 		$_SESSION['user']=$id;
+		
 		if(empty($id) || empty($pass)){ $valid = false; }
 		
 		if($valid == true)
@@ -49,6 +58,13 @@ if (!isset ($_SESSION['user']))
 				echo $login;
 				setcookie("user",$id, time()+3600);
 				//After signin user sees new index.html page as he is logged in, so sees logout and Logged In: UserName
+				
+				
+				/**************************
+		
+		here, we need to redirect to index.php
+		
+		***************************/
 				header("Location: index1.html");
 			}
 			
