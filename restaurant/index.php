@@ -27,7 +27,7 @@
         <nav>
           <ul class="menu">
           	<li>      
-          		<form action="search.php" method="post"> 
+          		<form id="search-form" action="search.php" method="post"> 
 			  		<input type="text" id="tb7" name="searchkey" id="searchkey"/>
 			  		<select name="searchtype" id="searchtype">
 				  		<option id="">--Search By--</option>
@@ -36,7 +36,7 @@
 				  		<option id="zipcode">Zipcode</option>
 				  		<option id="cuisine">Cuisine</option>
 			  		</select>
-			  		<input type="submit" name="searchsubmit" value="Search" class="sub1"> 
+			  		<input type="submit" name="searchsubmit" value="Go" class="sub1"> 
 			  	</form>
       		</li>
             <li><a href="index.php">Home</a></li>

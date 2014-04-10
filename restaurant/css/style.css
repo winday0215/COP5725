@@ -698,7 +698,20 @@ dl span {
 	background:#fff;
 	outline:none;
 }
-#signin-form input[type=submit] {
+#signup-form input[type=date] {
+	float:left;
+	width:232px;
+	font-size:12px;
+	line-height:1.25em;
+	color:#808080;
+	padding:2px 10px;
+	margin:0;
+	font-family:Arial, Helvetica, sans-serif;
+	border:1px solid #ededed;
+	background:#fff;
+	outline:none;
+}
+#signup-form input[type=submit] {
 	display:inline-block;
 	padding:12px 19px;
 	font-size:13px;
@@ -723,6 +736,46 @@ dl span {
 	background:#fff;
 	overflow:auto;
 	outline:none;
+}
+
+#search-form input[type=text] {
+	float:left;
+	width:100px;
+	font-size:12px;
+	line-height:1.25em;
+	color:#808080;
+	padding:2px 10px;
+	margin:0 5px 0 5px;
+	font-family:Arial, Helvetica, sans-serif;
+	border:1px solid #ededed;
+	background:#fff;
+	outline:none;
+}
+
+#search-form select {
+	float:left;
+	width:100px;
+	font-size:12px;
+	line-height:1.25em;
+	color:#808080;
+	padding:2px 10px;
+	margin:0 5px 0 5px;
+	font-family:Arial, Helvetica, sans-serif;
+	border:1px solid #ededed;
+	background:#fff;
+	outline:none;
+}
+
+#search-form input[type=submit] {
+	display:inline-block;
+	padding:2px 10px;
+	margin:0 5px 0 5px;
+	font-size:13px;
+	width:50px;
+	line-height:1.25em;
+	color:#fff;
+	background:url(../images/button3-tail.gif) 0 0 repeat-x #779f02;
+	cursor:pointer;
 }
 /****************************footer************************/
 footer {

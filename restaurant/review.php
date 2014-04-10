@@ -40,7 +40,7 @@ $(document).ready(function () {
         <nav>
           <ul class="menu">
           	<li>      
-          		<form action="php/search.php" method="post"> 
+          		<form id="search-form" action="php/search.php" method="post"> 
 			  		<input type="text" id="tb7" name="searchkey" id="searchkey"/>
 			  		<select name="searchtype" id="searchtype">
 				  		<option id="">--Search By--</option>
@@ -49,7 +49,7 @@ $(document).ready(function () {
 				  		<option id="zipcode">Zipcode</option>
 				  		<option id="cuisine">Cuisine</option>
 			  		</select>
-			  		<button name="searchbutton" id="searchbutton">Search</button> 
+			  		<input type="submit" name="searchsubmit" value="Go" class="sub1"> 
 			  	</form>
       		</li>
             <li><a href="index.php">Home</a></li>
