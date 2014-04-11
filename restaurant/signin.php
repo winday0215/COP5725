@@ -12,8 +12,8 @@ if (!$connection) {
 
 if (!isset ($_SESSION['user']))
 {
-	if (isset ($_POST['submit1'])){
-	
+	if (!empty($_POST['submit1'])){
+		echo "hi";
 		$valid = true;
 		//If email is userid we can do accordingly
 		$id = $_POST['email'];/*********what I post here is not email, but username**********/
@@ -59,6 +59,7 @@ if (!isset ($_SESSION['user']))
 			{	
 				echo $login;
 				setcookie("user",$id, time()+3600);
+				echo "<script type='text/javascript'>alert('Successfully logged in!!!')</script>";
 				//After signin user sees new index.html page as he is logged in, so sees logout and Logged In: UserName
 				
 				

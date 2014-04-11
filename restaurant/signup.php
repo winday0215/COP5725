@@ -7,7 +7,7 @@ session only start when sign in
 /OK
 ***************/
 //session_start();
-
+$c=0;
 $valid=false;
 $connection = oci_connect($username = 'jing',
                           $password = 'spring123456',
@@ -17,12 +17,13 @@ if (!$connection) {
     $e = oci_error();
     trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 }
+else { echo "successful connection";}
 
 if (!isset ($_SESSION['user']))
 {
 	echo "abc";
 	
-	if (isset ($_POST['submit2']))
+	if (!empty($_POST['submit2']))
 	{	
 		echo "1.0";
 		$valid =true;
@@ -31,13 +32,13 @@ if (!isset ($_SESSION['user']))
 		$user1 = $_POST['email2'];
         $pass = $_POST['password1'];
 		$pass1 = $_POST['password1'];
-        $fname = $_POST['fname'];
-		$lname = $_POST['lname'];
+        $fname = $_POST['firstname'];
+		$lname = $_POST['lastname'];
 		$city = $_POST['city'];
 		$state = $_POST['state'];
 		$street = $_POST['street'];
 		$zip = $_POST['zipcode'];
-		$date = $_POST['birthdate'];
+		$date = $_POST['DOB'];
 		$gen = $_POST['gender'];
 		//put default unknown user pic path in image url initially
 		$iurl = 'images/pic.jpg';
@@ -52,9 +53,9 @@ no any session info  when sign up
 I think you mean no need of session here, so commenting it out
 ***************/
 		//$_SESSION['user']=$user;
-		if($user == $user1) {echo "Email IDs do not match"; $valid=false;}
-		if($pass == $pass1) {echo "Passwords do not match"; $valid=false;}
-		if(empty($user) || empty($fname) || empty($lname) ||empty($pass) || empty($city) || empty($state)){ $valid = false; }
+		if($user == $user1) {echo "Email IDs do not match"; $valid=false; $c=2;}
+		if($pass == $pass1) {echo "Passwords do not match"; $valid=false; $c=3;}
+		if(empty($user) || empty($fname) || empty($lname) ||empty($pass) || empty($city) || empty($state)){ $valid = false; $c=1;}
 		if($valid == true)
 		{	
 			echo "1";
@@ -121,7 +122,18 @@ I think you mean no need of session here, so commenting it out
 	
 		else
 		{ 
-			echo "Enter required fields(Email-ID, Password, First name, Last name, City, State)";			 
+			echo "Here";
+			if($c==1){
+				echo "<script type='text/javascript'>alert('Enter required fields(Email-ID, Password, First name, Last name, City, State)')</script>";
+			}
+			if($c==2){
+			echo "<script type='text/javascript'>alert('Email IDs mismatch!!!)</script>";
+			}
+			if($c==3){
+			echo "<script type='text/javascript'>alert('Passwords mismatch!!!)</script>";
+			}
+			header("Location: signin.html");
+						 
 		}
 	}
 }
