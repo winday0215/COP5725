@@ -12,7 +12,7 @@ if (!$connection) {
 
 if (!isset ($_SESSION['user']))
 {
-	if (isset ($_POST['submit'])){
+	if (isset ($_POST['submit1'])){
 	
 		$valid = true;
 		//If email is userid we can do accordingly
@@ -71,7 +71,7 @@ if (!isset ($_SESSION['user']))
 		***************************/
 				header("Location: index.php");
 			}
-			
+			oci_free_statement($query);
 		}	
 		else
 		{ 
@@ -81,6 +81,6 @@ if (!isset ($_SESSION['user']))
 		}
 	}
 }	
-oci_free_statement($query);
+
 oci_close($connection);
 ?>

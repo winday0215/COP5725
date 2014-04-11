@@ -20,9 +20,12 @@ if (!$connection) {
 
 if (!isset ($_SESSION['user']))
 {
-	//echo "abc";
-	if (isset ($_POST['submit']))
-	{	$valid =true;
+	echo "abc";
+	
+	if (isset ($_POST['submit2']))
+	{	
+		echo "1.0";
+		$valid =true;
 		
 		$user = $_POST['email1'];
 		$user1 = $_POST['email2'];
@@ -54,6 +57,7 @@ I think you mean no need of session here, so commenting it out
 		if(empty($user) || empty($fname) || empty($lname) ||empty($pass) || empty($city) || empty($state)){ $valid = false; }
 		if($valid == true)
 		{	
+			echo "1";
 			$sql = "SELECT EMAIL FROM useraccount where EMAIL = '{$user}'";
 			$query = oci_parse($connection,$sql);
 			oci_execute($query);
@@ -70,7 +74,7 @@ I think you mean no need of session here, so commenting it out
 				
 				Done using useridm for max value
 				****************/
-				$sql="Select MAX(userid) AS useridm from useraccount"
+				$sql="Select MAX(userid) AS useridm from useraccount";
 				$query = oci_parse($connection,$sql);
 				oci_define_by_name($query, 'useridm',$useridm);
 				oci_execute($query);
@@ -111,7 +115,8 @@ I think you mean no need of session here, so commenting it out
 				  echo "<script type='text/javascript'>alert('You have successfully signed up!!! You may login using your credentials now.')</script>";
 				  header("Location: signin.html");
 				}
-			}		
+			}
+			oci_free_statement($query);
 		}
 	
 		else
@@ -124,6 +129,6 @@ else
 { 
 echo "<meta http-equiv='refresh' content='0;signin.html'>";
 }
-oci_free_statement($query);
+
 oci_close($connection);
 ?>
