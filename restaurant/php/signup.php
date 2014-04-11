@@ -24,8 +24,10 @@ if (!isset ($_SESSION['user']))
 	if (isset ($_POST['submit']))
 	{	$valid =true;
 		
-		$user = $_POST['email'];
-        $pass = $_POST['password'];
+		$user = $_POST['email1'];
+		$user1 = $_POST['email2'];
+        $pass = $_POST['password1'];
+		$pass1 = $_POST['password1'];
         $fname = $_POST['fname'];
 		$lname = $_POST['lname'];
 		$city = $_POST['city'];
@@ -47,7 +49,8 @@ no any session info  when sign up
 I think you mean no need of session here, so commenting it out
 ***************/
 		//$_SESSION['user']=$user;
-		
+		if($user == $user1) {echo "Email IDs do not match"; $valid=false;}
+		if($pass == $pass1) {echo "Passwords do not match"; $valid=false;}
 		if(empty($user) || empty($fname) || empty($lname) ||empty($pass) || empty($city) || empty($state)){ $valid = false; }
 		if($valid == true)
 		{	
@@ -121,4 +124,6 @@ else
 { 
 echo "<meta http-equiv='refresh' content='0;signin.html'>";
 }
+oci_free_statement($query);
+oci_close($connection);
 ?>

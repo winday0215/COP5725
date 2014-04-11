@@ -81,5 +81,6 @@ if (!isset ($_SESSION['user']))
 		}
 	}
 }	
-oci_free_statement($statement);
+oci_free_statement($query);
 oci_close($connection);
+?>

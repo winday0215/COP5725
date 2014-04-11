@@ -79,13 +79,13 @@ $(document).ready(function () {
 				  <fieldset>
 				  	 <input type="hidden" id="uid" name="uid" value="<?php echo $uid;?>"/>
 					  <label><span class="text-form">Old Password:</span>
-					  	<input name="oldpassword" type="text" />
+					  	<input name="oldpassword" type="password" />
 					 </label>
 					 <label><span class="text-form">New Password:</span>
-					  	<input name="newpassword" type="text" />
+					  	<input name="newpassword" type="password" />
 					 </label>
 					 <label><span class="text-form">New Password:</span>
-					  	<input name="vnewpassword" type="text" />
+					  	<input name="vnewpassword" type="password" />
 					 </label>
 					<div class="wrapper">
 						 <div class="extra-wrap">

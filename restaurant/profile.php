@@ -78,17 +78,20 @@ $(document).ready(function () {
 			  <form id="signin-form" name="updateprofile-form" action="php/updateprofile.php" method="post" enctype="multipart/form-data">
 				  <fieldset>
 				  	 <input type="hidden" id="uid" name="uid" value="<?php echo $uid;?>"/>
-					  <label><span class="text-form">First Name*:</span>
-					  	<input name="firstname" type="text" />
+					 <label><span class="text-form">Email ID*:</span>
+					  	<input name="email" type="text" readonly value="<?php echo $email;?>"/>
+					 </label>
+					 <label><span class="text-form">First Name*:</span>
+					  	<input name="firstname" type="text" readonly value="<?php echo $fname;?>"/>
 					 </label>
 					 <label><span class="text-form">Last Name*:</span>
-					  	<input name="lastname" type="text" />
+					  	<input name="lastname" type="text" readonly value="<?php echo $lname;?>"/>
 					 </label>
 					 <label><span class="text-form">City*:</span>
-					  	<input name="city" type="text" />
+					  	<input name="city" type="text" placeholder="<?php echo $city;?>"/>
 					 </label>
 					<label><span class="text-form">State*:</span>
-						<select name="State"> 
+						<select name="state"> 
 						<option value="" selected="selected">Select a State</option> 
 						<option value="AL">Alabama</option> 
 						<option value="AK">Alaska</option> 
@@ -143,17 +146,17 @@ $(document).ready(function () {
 						<option value="WY">Wyoming</option>
 						</select>
 					 </label>
-					 <label><span class="text-form">street:</span>
-					  	<input name="street" type="text" />
+					 <label><span class="text-form">Street:</span>
+					  	<input name="street" type="text" placeholder="<?php echo $street;?>"/>
 					 </label>
 					 <label><span class="text-form">Zipcode:</span>
-					  	<input name="zipcode" type="text" />
+					  	<input name="zipcode" type="text" placeholder="<?php echo $zipcode;?>"/>
 					 </label>
-					 <label><span class="text-form">Birthday:</span>
-					  	<input name="DOB" type="text" />
+					 <label><span class="text-form">Birthdate:</span>
+					  	<input name="DOB" type="text" onfocus="(this.type='date')" placeholder="<?php echo $dob;?>"/>
 					 </label>
 					  <label><span class="text-form">Gender:</span>
-					  	<input name="gender" type="text" />
+					  	<input name="gender" type="text" placeholder="<?php echo $gender;?>"/>
 					 </label>
 					 <div class="wrapper">
 						 <div class="extra-wrap">
