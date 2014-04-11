@@ -72,7 +72,7 @@ $(document).ready(function () {
       	<div class="indent-left">
 			  <!--=================Sign In===================-->
 			  <h3 class="p1">Sign In</h3>
-			  <form id="signin-form" action="php/signin.php" method="post" enctype="multipart/form-data">
+			  <form name="signin-form" id="signin-form" action="signin.php" method="post" enctype="multipart/form-data">
 				  <fieldset>
 					 <label><span class="text-form">UserName:</span>
 					  	<input name="username" type="text" />
@@ -86,7 +86,8 @@ $(document).ready(function () {
 					 <div class="wrapper">
 						 <div class="extra-wrap">
 						 <div class="clear"></div>
-                         <div class="buttons1"> <input type="submit" value="Submit"> </div>
+                         <div class="buttons1">
+					 <input name="submit1" type="submit" value="Signin"> </div>
                      </div>
                     </div>
 			      </fieldset>
@@ -98,7 +99,7 @@ $(document).ready(function () {
         <h3>Sign Up</h3>
         <div class="wrapper">
 	        <h5>Don't have account? Sign up here!</h5>
-	        <form id="signup-form" action="php/signup.php" method="post" enctype="multipart/form-data">
+	        <form name="signup-form" id="signup-form" action="signup.php" method="post" enctype="multipart/form-data">
 				  <fieldset>
 					 <label><span class="text-form">Email*:</span>
 					  	<input name="email1" type="email" />
@@ -122,7 +123,7 @@ $(document).ready(function () {
 					  	<input name="city" type="text" />
 					 </label>
 					<label><span class="text-form">State*:</span>
-						<select name="State"> 
+						<select name="state"> 
 						<option value="" selected="selected">Select a State</option> 
 						<option value="AL">Alabama</option> 
 						<option value="AK">Alaska</option> 
@@ -192,7 +193,8 @@ $(document).ready(function () {
 					 <div class="wrapper">
 						 <div class="extra-wrap">
 						 <div class="clear"></div>
-                         <div class="buttons1"> <input type="submit" value="Submit"> </div>
+                         <div class="buttons1">
+					<input name="submit2" type="submit" value="Signup"> </div>
                      </div>
                     </div>
 			      </fieldset>
