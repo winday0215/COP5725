@@ -1,4 +1,3 @@
-
 <?php
 	//Use this file to insert updated values into table USERACCOUNT, and then go back to account.php
 	

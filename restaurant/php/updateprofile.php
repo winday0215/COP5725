@@ -14,42 +14,42 @@
 	$uid = $_POST['uid'];
 	echo $uid;
 	
-	$sql = "SELECT email FROM useraccount where userid = '{$uid}'";
+	$sql = "SELECT email FROM useraccount where userid = '$uid'";
 	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query, 'email',$email);
 	oci_execute($query);
 	
-	$sql = "SELECT fname FROM useraccount where userid = '{$uid}'";
+	$sql = "SELECT fname FROM useraccount where userid = '$uid'";
 	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query, 'fname',$fname);
 	oci_execute($query);
 	
-	$sql = "SELECT lname FROM useraccount where userid = '{$uid}'";
+	$sql = "SELECT lname FROM useraccount where userid = '$uid'";
 	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query, 'lname',$lname);
 	oci_execute($query);
 	
-	$sql = "SELECT city FROM useraccount where userid = '{$uid}'";
+	$sql = "SELECT city FROM useraccount where userid = '$uid'";
 	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query, 'city',$city);
 	oci_execute($query);
 	
-	$sql = "SELECT street FROM useraccount where userid = '{$uid}'";
+	$sql = "SELECT street FROM useraccount where userid = '$uid'";
 	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query, 'street',$street);
 	oci_execute($query);
 	
-	$sql = "SELECT zipcode FROM useraccount where userid = '{$uid}'";
+	$sql = "SELECT zipcode FROM useraccount where userid = '$uid'";
 	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query, 'zipcode',$zipcode);
 	oci_execute($query);
 	
-	$sql = "SELECT dob FROM useraccount where userid = '{$uid}'";
+	$sql = "SELECT dob FROM useraccount where userid = '$uid'";
 	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query, 'dob',$date);
 	oci_execute($query);
 
-	$sql = "SELECT gender FROM useraccount where userid = '{$uid}'";
+	$sql = "SELECT gender FROM useraccount where userid = '$uid'";
 	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query, 'gender',$gender);
 	oci_execute($query);

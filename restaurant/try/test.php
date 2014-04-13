@@ -1,4 +1,3 @@
-
 <?php
 $connection = oci_connect($username = 'jing',
                           $password = 'spring123456',
