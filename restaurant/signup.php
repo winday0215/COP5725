@@ -72,7 +72,7 @@ if($valid == true)
 		}
 		else
 		{
-		  echo "Successful";
+		  //echo "Successful";
 	  	  //set cookie with userid, userid is unique
 		  //Done, commenting it out for time being
 		  //setcookie("user",$useridm, time()+3600);

@@ -13,7 +13,7 @@ if (!$connection) {
 //If email is userid we can do accordingly
 $id = $_POST['username'];/*********what I post here is not email, but username**********/
 $password = $_POST['pwd'];
-echo $id ." ". $password ."<br>";
+//echo $id ." ". $password ."<br>";
 
 /**************************
 
