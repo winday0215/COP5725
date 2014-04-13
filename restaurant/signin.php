@@ -1,5 +1,5 @@
 <?php
-//session_start();
+session_start();
 $valid=true;
 $connection = oci_connect($username = 'jing',
                           $password = 'spring123456',
@@ -11,18 +11,11 @@ if (!$connection) {
 }
 
 //If email is userid we can do accordingly
-$id = $_POST['username'];/*********what I post here is not email, but username**********/
+$id = $_POST['username'];
 $password = $_POST['pwd'];
 //echo $id ." ". $password ."<br>";
 
-/**************************
 
-i want user in session as userid in useraccount database, not email. Because
-other tables use userid, not email. can you modify this?
-
-I'm not able to get what you want. 'user' is the name of the session. Here we are logging in using emailid, right? Please feel free to edit as you deem necessary. Do tell in detail if you want us to change as we can't understand this. It is just for logging in. Session is still user.
-
-***************************/
 
 //$_SESSION['user']=$id;
 
@@ -39,7 +32,19 @@ if($valid == true)
 	
 	if(oci_num_rows($query) > 0)
 	{
-	$login='Welcome';
+	//get userid and first name from database and set them to session
+		$sql1 = "SELECT userid, fname FROM useraccount WHERE email = '$id'";
+		$query1 = oci_parse($connection,$sql1);
+		oci_define_by_name($query1, 'USERID',$userid);
+		oci_define_by_name($query1, 'FNAME',$fname);
+		oci_execute($query1);
+		while(oci_fetch($query1)){
+			$_SESSION['user']=$userid;
+			$_SESSION['fname']=$fname;
+			//echo $_SESSION['user'];
+		}
+	//end of session part
+		$login="Welcome, $fname";
 	}	
 	else
 	{
@@ -60,6 +65,7 @@ if($valid == true)
 		//After signin user sees new index.html page as he is logged in, so sees logout and Logged In: UserName
 		echo "<script type='text/javascript'>window.location.replace('index.php');</script>";
 	}
+	oci_free_statement($query1);
 	oci_free_statement($query);
 }
 else

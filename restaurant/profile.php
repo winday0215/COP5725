@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<?php
+session_start();
+if(!isset($_SESSION['user'])){
+	echo "<script type='text/javascript'>alert('You must login at first!')</script>";
+		//setcookie("user",$id, time()+3600);
+	echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
+}
+?>
 <html lang="en">
 <head>
 <title>Kravings.com | Sing In/Sign Up</title>
@@ -53,7 +61,16 @@ $(document).ready(function () {
             <li><a href="index.php">Home</a></li>
             <li><a href="allrestaurants.php">Restaurants</a></li>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="signin.html">SignIn/SignUp </a></li>
+            <?php            
+            if(isset($_SESSION['user'])){
+            	$uid = $_SESSION['user'];
+            	$fname = $_SESSION['fname'];
+            	echo "<li><a href='account.php'>Account|</a><a href='logout.php'>Logout</a></li>";
+            }
+            else {
+            	echo "<li><a href='signin.html'>Singin/Signup</a></li>";
+            }
+            ?>
           </ul>
         </nav>
       </div>

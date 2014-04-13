@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<?php
+session_start();
+if(!isset($_SESSION['user'])){
+	echo "<script type='text/javascript'>alert('You must login at first!')</script>";
+		//setcookie("user",$id, time()+3600);
+	echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
+}
+?>
 <html lang="en">
 <head>
 <title>Kravings.com | Sing In/Sign Up</title>
@@ -25,12 +33,6 @@ $(document).ready(function () {
 </script>
 <!--[if lt IE 9]><script type="text/javascript" src="js/html5.js"></script><![endif]-->
 </head>
-<!--==============================php=================================-->
-<?php
-	//get RID from URL
-	$uid = $_GET['USERID'];
-?>
-<!--==============================php=================================-->
 <body id="page2">
 <!--==============================header=================================-->
 <header>
@@ -56,7 +58,16 @@ $(document).ready(function () {
             <li><a href="index.php">Home</a></li>
             <li><a href="allrestaurants.php">Restaurants</a></li>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="signin.html">SignIn/SignUp </a></li>
+            <?php            
+            if(isset($_SESSION['user'])){
+            	$uid = $_SESSION['user'];
+            	$fname = $_SESSION['fname'];
+            	echo "<li><a href='account.php'>Account|</a><a href='logout.php'>Logout</a></li>";
+            }
+            else {
+            	echo "<li><a href='signin.html'>Singin/Signup</a></li>";
+            }
+            ?>
           </ul>
         </nav>
       </div>
@@ -80,12 +91,12 @@ $(document).ready(function () {
 			  <h3 class="p1">Account Settings >> Overview</h3>
 			  <hr>
 			  <div>
-				  <p><h4><a href="profile.php?USERID=<?php echo $uid; ?>">Profile</a></h4></p>
+				  <p><h4><a href="profile.php">Profile</a></h4></p>
 				  <p>Edit your name, public profile information, and your Member Search preference.</p>
 			  </div>
 			  <hr>
 			  <div>
-				  <p><h4><a href="password.php?USERID=<?php echo $uid; ?>">Password</a></h4></p>
+				  <p><h4><a href="password.php">Password</a></h4></p>
 				  <p>Change the password for your Kravings Account.</p>
 			  </div>
 			  <hr>

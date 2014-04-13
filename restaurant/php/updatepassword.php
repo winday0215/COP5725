@@ -2,8 +2,14 @@
 	//Use this file to insert updated values into table USERACCOUNT, and then go back to account.php
 	
 	
-	//get POST values from password.php, form updatepassword-form
-	
+	/*Session start, check if user is set in session, if not, go to singin.html*/
+	session_start();
+	if(!isset($_SESSION['user'])){
+		echo "<script type='text/javascript'>alert('You must login at first!')</script>";
+			//setcookie("user",$id, time()+3600);
+		echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
+	}
+	/******************************/
 	$connection = oci_connect($username = 'jing',
                           $password = 'spring123456',
                           $connection_string = '//oracle.cise.ufl.edu/orcl');
