@@ -1,15 +1,14 @@
 <?php
-	//Use this file to insert updated values into table USERACCOUNT, and then go back to account.php
+	//Use this file to insert updated values into table USERACCOUNT, and then go back to account.php	
 	
-	
-	/*Session start, check if user is set in session, if not, go to singin.html*/
+	/*Session start, check if user is set in session, if not, go to signin.html*/
 	session_start();
 	if(!isset($_SESSION['user'])){
 		echo "<script type='text/javascript'>alert('You must login at first!')</script>";
 			//setcookie("user",$id, time()+3600);
 		echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
 	}
-	/******************************/
+	
 	$connection = oci_connect($username = 'jing',
                           $password = 'spring123456',
                           $connection_string = '//oracle.cise.ufl.edu/orcl');
@@ -20,22 +19,23 @@
 	}
 	
 	$uid = $_POST['uid'];
-	echo $uid;
 	
 	$opass = $_POST['oldpassword'];
 	$npass = $_POST['newpassword'];
 	$cpass = $_POST['vnewpassword'];
-	
-	$sql = "SELECT pass FROM useraccount where userid = '{$uid}'";
+	$sql = "SELECT password FROM useraccount where userid = '$uid'";
 	$query = oci_parse($connection,$sql);
-	oci_define_by_name($query, 'pass',$pass);
+	oci_define_by_name($query, 'password',$pass);
 	oci_execute($query);
+	while ($row=oci_fetch_assoc($query)) {
+		$pass=$row['PASSWORD'];
+	}
 
 	if ($pass == $opass)
 	{
 		if ($npass == $cpass)
 		{
-			$sql = "INSERT into useraccount (password) values('$npass')";
+			$sql = "UPDATE useraccount SET password='$npass' where userid='$uid'";
 			$query = oci_parse($connection,$sql);
 			oci_execute($query);
 						
@@ -45,25 +45,23 @@
 			}
 			else
 			{
-			  echo "Successful";
 			  //setcookie("user",$useridm, time()+3600);
 			  echo "<script type='text/javascript'>alert('Password updated successfully!!!!')</script>";
-			  header("Location: account.php");
+			  echo "<script type='text/javascript'>window.location.replace('/restaurant/account.php');</script>";
 			}
 		}
 		else
 		{
-			echo "Passwords do not match";
+			echo "<script type='text/javascript'>alert('Passwords do not match!!!')</script>";
+			echo "<script type='text/javascript'>window.location.replace('/restaurant/password.php');</script>";
 		}
 	}
 	else
 	{
-		echo "Wrong password entered";
+		echo "<script type='text/javascript'>alert('Wrong password entered')</script>";
+		echo "<script type='text/javascript'>window.location.replace('/restaurant/password.php');</script>";
 	}
 	
 	oci_free_statement($query);
 	oci_close($connection);
-//
-// VERY important to close Oracle Database Connections and free statements!
-//
 ?>

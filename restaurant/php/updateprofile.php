@@ -1,14 +1,13 @@
 <?php
 	//Use this file to insert updated values into table USERACCOUNT, and then go back to account.php
 
-	/*Session start, check if user is set in session, if not, go to singin.html*/
+	/*Session start, check if user is set in session, if not, go to signin.html*/
 	session_start();
 	if(!isset($_SESSION['user'])){
 		echo "<script type='text/javascript'>alert('You must login at first!')</script>";
 			//setcookie("user",$id, time()+3600);
 		echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
 	}
-	/******************************/
 	
 	$connection = oci_connect($username = 'jing',
                           $password = 'spring123456',
@@ -20,56 +19,37 @@
 	}
 	
 	$uid = $_POST['uid'];
-	echo $uid;
+	//echo $uid;
 	
-	$sql = "SELECT email FROM useraccount where userid = '$uid'";
+	$sql = "SELECT * FROM useraccount where userid = '$uid'";
 	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query, 'email',$email);
-	oci_execute($query);
-	
-	$sql = "SELECT fname FROM useraccount where userid = '$uid'";
-	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query, 'fname',$fname);
-	oci_execute($query);
-	
-	$sql = "SELECT lname FROM useraccount where userid = '$uid'";
-	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query, 'lname',$lname);
-	oci_execute($query);
-	
-	$sql = "SELECT city FROM useraccount where userid = '$uid'";
-	$query = oci_parse($connection,$sql);
-	oci_define_by_name($query, 'city',$city);
-	oci_execute($query);
-	
-	$sql = "SELECT street FROM useraccount where userid = '$uid'";
-	$query = oci_parse($connection,$sql);
-	oci_define_by_name($query, 'street',$street);
-	oci_execute($query);
-	
-	$sql = "SELECT zipcode FROM useraccount where userid = '$uid'";
-	$query = oci_parse($connection,$sql);
-	oci_define_by_name($query, 'zipcode',$zipcode);
-	oci_execute($query);
-	
-	$sql = "SELECT dob FROM useraccount where userid = '$uid'";
-	$query = oci_parse($connection,$sql);
-	oci_define_by_name($query, 'dob',$date);
+	oci_define_by_name($query, 'city',$city1);
+	oci_define_by_name($query, 'street',$street1);
+	oci_define_by_name($query, 'state',$state1);
+	oci_define_by_name($query, 'zipcode',$zipcode1);
+	oci_define_by_name($query, 'dob',$date1);
+	oci_define_by_name($query, 'gender',$gender1);
 	oci_execute($query);
 
-	$sql = "SELECT gender FROM useraccount where userid = '$uid'";
-	$query = oci_parse($connection,$sql);
-	oci_define_by_name($query, 'gender',$gender);
-	oci_execute($query);
-	
-	if ($_POST['city']) {$city = $_POST['city'];}
-	if ($_POST['state']) {$state = $_POST['state'];}
-	if ($_POST['street']) {$street = $_POST['street'];}
-	if ($_POST['zipcode']) {$zip = $_POST['zipcode'];}
-	if ($_POST['DOB']) {$date = $_POST['DOB'];}
-	if ($_POST['gender']) {$gen = $_POST['gender'];}
-	
-	$sql = "INSERT into useraccount (street,zipcode,gender,dob,city,state) values('$street','$zip','$gen','$date','$city','$state')";
+	while ($row=oci_fetch_assoc($query)) {
+		$email=$row['EMAIL'];
+		$fname=$row['FNAME'];
+		$lname=$row['LNAME'];
+	}
+
+	if ($_POST['city']) {$city = $_POST['city'];} else {$city = $city1; }
+	if ($_POST['state']) {$state = $_POST['state'];} else {$state = $state1;}
+	if ($_POST['street']) {$street = $_POST['street'];} else {$street = $street1;}
+	if ($_POST['zipcode']) {$zipcode = $_POST['zipcode'];} else {$zipcode = $zipcode1;}
+	if ($_POST['DOB']) {$date = $_POST['DOB'];} else {$date = $date1;}
+	if ($_POST['gender']) {$gender = $_POST['gender'];} else {$gender = $gender1;}
+
+	echo $email ." ". $fname ." ". $lname ." ". $street ." ". $state ." ". $zipcode ." ". $gender ." ". $date ." ". $city;
+
+	$sql = "UPDATE useraccount SET street='$street', zipcode='$zipcode', gender='$gender', dob='$date', city='$city', state='$state' WHERE userid='$uid'";
 	$query = oci_parse($connection,$sql);
 	oci_execute($query);
 				
@@ -79,15 +59,10 @@
 	}
 	else
 	{
-	  echo "Successful";
-	  //setcookie("user",$useridm, time()+3600);
 	  echo "<script type='text/javascript'>alert('Changes updated!!!!')</script>";
-	  header("Location: account.php");
+	  echo "<script type='text/javascript'>window.location.replace('/restaurant/account.php');</script>";
 	}
 
 	oci_free_statement($query);
 	oci_close($connection);
-//
-// VERY important to close Oracle Database Connections and free statements!
-//
 ?>

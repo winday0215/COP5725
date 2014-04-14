@@ -52,7 +52,7 @@ session_start();
             	echo "<li><a href='account.php'>Account|</a><a href='logout.php'>Logout</a></li>";
             }
             else {
-            	echo "<li><a href='signin.html'>Singin/Signup</a></li>";
+            	echo "<li><a href='signin.html'>Signin/Signup</a></li>";
             }
             ?>
           </ul>

@@ -1,6 +1,7 @@
 <?php
 session_start();
 $valid=true;
+$c=0;
 $connection = oci_connect($username = 'jing',
                           $password = 'spring123456',
                           $connection_string = '//oracle.cise.ufl.edu/orcl');
@@ -14,9 +15,6 @@ if (!$connection) {
 $id = $_POST['username'];
 $password = $_POST['pwd'];
 //echo $id ." ". $password ."<br>";
-
-
-
 //$_SESSION['user']=$id;
 
 if(empty($id) || empty($password)){ $valid = false; }
@@ -33,14 +31,30 @@ if($valid == true)
 	if(oci_num_rows($query) > 0)
 	{
 	//get userid and first name from database and set them to session
-		$sql1 = "SELECT userid, fname FROM useraccount WHERE email = '$id'";
+		$sql1 = "SELECT * FROM useraccount WHERE email = '$id'";
 		$query1 = oci_parse($connection,$sql1);
 		oci_define_by_name($query1, 'USERID',$userid);
+		oci_define_by_name($query1, 'EMAIL',$email);
 		oci_define_by_name($query1, 'FNAME',$fname);
+		oci_define_by_name($query1, 'LNAME',$lname);
+		oci_define_by_name($query1, 'CITY',$city);
+		oci_define_by_name($query1, 'STREET',$street);
+		oci_define_by_name($query1, 'STATE',$state);
+		oci_define_by_name($query1, 'ZIPCODE',$zipcode);
+		oci_define_by_name($query1, 'DOB',$dob);
+		oci_define_by_name($query1, 'GENDER',$gender);
 		oci_execute($query1);
 		while(oci_fetch($query1)){
 			$_SESSION['user']=$userid;
+			$_SESSION['email']=$email;
 			$_SESSION['fname']=$fname;
+			$_SESSION['lname']=$lname;
+			$_SESSION['city']=$city;
+			$_SESSION['street']=$street;
+			$_SESSION['state']=$state;
+			$_SESSION['zipcode']=$zipcode;
+			$_SESSION['dob']=$dob;
+			$_SESSION['gender']=$gender;
 			//echo $_SESSION['user'];
 		}
 	//end of session part
@@ -48,7 +62,7 @@ if($valid == true)
 	}	
 	else
 	{
-		$login= 'Wrong login or password';
+		$login= 'Wrong login or password'; $c=1;
 	}
 
 	if(!$query)
@@ -63,7 +77,12 @@ if($valid == true)
 		echo "<script type='text/javascript'>alert('$login')</script>";
 		
 		//After signin user sees new index.html page as he is logged in, so sees logout and Logged In: UserName
-		echo "<script type='text/javascript'>window.location.replace('index.php');</script>";
+		if($c==1){
+				echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
+		}
+		else{
+				echo "<script type='text/javascript'>window.location.replace('index.php');</script>";
+		}
 	}
 	oci_free_statement($query1);
 	oci_free_statement($query);

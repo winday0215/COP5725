@@ -61,11 +61,19 @@ $(document).ready(function () {
             <?php            
             if(isset($_SESSION['user'])){
             	$uid = $_SESSION['user'];
+              $email = $_SESSION['email'];
             	$fname = $_SESSION['fname'];
+              $lname = $_SESSION['lname'];
+              $city = $_SESSION['city'];
+              $street = $_SESSION['street'];
+              $state = $_SESSION['state'];
+              $zipcode = $_SESSION['zipcode'];
+              $dob = $_SESSION['dob'];
+              $gender = $_SESSION['gender'];
             	echo "<li><a href='account.php'>Account|</a><a href='logout.php'>Logout</a></li>";
             }
             else {
-            	echo "<li><a href='signin.html'>Singin/Signup</a></li>";
+            	echo "<li><a href='signin.html'>Signin/Signup</a></li>";
             }
             ?>
           </ul>

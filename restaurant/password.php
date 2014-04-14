@@ -2,14 +2,14 @@
 <?php
 session_start();
 if(!isset($_SESSION['user'])){
-	echo "<script type='text/javascript'>alert('You must login at first!')</script>";
+	 echo "<script type='text/javascript'>alert('You must login at first!')</script>";
 		//setcookie("user",$id, time()+3600);
-	echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
+	 echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
 }
 ?>
 <html lang="en">
 <head>
-<title>Kravings.com | Sing In/Sign Up</title>
+<title>Kravings.com | Sign In/Sign Up</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen">
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
@@ -34,7 +34,7 @@ $(document).ready(function () {
 <!--[if lt IE 9]><script type="text/javascript" src="js/html5.js"></script><![endif]-->
 </head>
 <?php
-	$uid = $_GET['USERID'];
+	//$uid = $_GET['USERID'];
 ?>
 <body id="page2">
 <!--==============================header=================================-->
