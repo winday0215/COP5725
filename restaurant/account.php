@@ -9,7 +9,7 @@ if(!isset($_SESSION['user'])){
 ?>
 <html lang="en">
 <head>
-<title>Kravings.com | Sing In/Sign Up</title>
+<title>Kravings.com | Sign In/Sign Up</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen">
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
@@ -57,7 +57,7 @@ $(document).ready(function () {
       		</li>
             <li><a href="index.php">Home</a></li>
             <li><a href="allrestaurants.php">Restaurants</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="contact.php">Contact</a></li>
             <?php            
             if(isset($_SESSION['user'])){
             	$uid = $_SESSION['user'];
