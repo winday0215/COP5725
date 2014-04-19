@@ -8,24 +8,23 @@
 		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 	}
 
-	$lname = $_POST["lname"];
-	$email = $_POST["email"];
-	$sql = "SELECT email,lname FROM useraccount where email = '$email'";
+	$confirm = $_POST["confirm"];
+	/*$sql = "SELECT email,lname FROM useraccount where email = '$email'";
 	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query,'email',$email1);
 	oci_execute($query);
 	while ($row=oci_fetch_assoc($query)) {
 		$email1=$row['EMAIL'];
 		$lname1=$row['LNAME'];
-	}
+	}*/
 	
-	if($email==$email1 && $lname==$lname1){
-		echo "<script type='text/javascript'>alert('Password reset link sent. Please enter received confirmation code on next page!!!')</script>";
-		echo "<script type='text/javascript'>window.location.replace('/restaurant/confirmation.php');</script>";
+	if($confirm=="abc123"){
+		echo "<script type='text/javascript'>alert('Please reset your password!!!')</script>";
+		echo "<script type='text/javascript'>window.location.replace('/restaurant/rpass.php');</script>";
 	}
 	else
 	{
-		echo "<script type='text/javascript'>alert('Sorry, Email ID does not exist!!! Please try again or signup.')</script>";
+		echo "<script type='text/javascript'>alert('Wrong code!!! Sorry try again or signup.')</script>";
 		echo "<script type='text/javascript'>window.location.replace('/restaurant/signin.html');</script>";
 	}
 ?>

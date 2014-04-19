@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<?php
+/*session_start();
+if(!isset($_SESSION['user'])){
+	 echo "<script type='text/javascript'>alert('You must login at first!')</script>";
+		//setcookie("user",$id, time()+3600);
+	 echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
+}*/
+?>
 <html lang="en">
 <head>
 <title>Kravings.com | Sign In/Sign Up</title>
@@ -26,7 +34,7 @@ $(document).ready(function () {
 <!--[if lt IE 9]><script type="text/javascript" src="js/html5.js"></script><![endif]-->
 </head>
 <?php
-  //$uid = $_GET['USERID'];
+	//$uid = $_GET['USERID'];
 ?>
 <body id="page2">
 <!--==============================header=================================-->
@@ -37,22 +45,32 @@ $(document).ready(function () {
        <h1><a href="index.php">Kravings<span>.com</span></a></h1>
         <nav>
           <ul class="menu">
-            <li>      
-              <form id="search-form" action="search.php" method="post"> 
-            <input type="text" id="tb7" name="searchkey" id="searchkey"/>
-            <select name="searchtype" id="searchtype">
-              <option id="">--Search By--</option>
-              <option id="city">City</option>
-              <option id="name">Restaurant Name</option>
-              <option id="zipcode">Zipcode</option>
-              <option id="cuisine">Cuisine</option>
-            </select>
-            <input type="submit" name="searchsubmit" value="Go" class="sub1"> 
-          </form>
-          </li>
+          	<li>      
+          		<form id="search-form" action="search.php" method="post"> 
+			  		<input type="text" id="tb7" name="searchkey" id="searchkey"/>
+			  		<select name="searchtype" id="searchtype">
+				  		<option id="">--Search By--</option>
+				  		<option id="city">City</option>
+				  		<option id="name">Restaurant Name</option>
+				  		<option id="zipcode">Zipcode</option>
+				  		<option id="cuisine">Cuisine</option>
+			  		</select>
+			  		<input type="submit" name="searchsubmit" value="Go" class="sub1"> 
+			  	</form>
+      		</li>
             <li><a href="index.php">Home</a></li>
             <li><a href="allrestaurants.php">Restaurants</a></li>
             <li><a href="contact.php">Contact</a></li>
+            <?php            
+            /*if(isset($_SESSION['user'])){
+            	$uid = $_SESSION['user'];
+            	$fname = $_SESSION['fname'];
+            	echo "<li><a href='account.php'>Account|</a><a href='logout.php'>Logout</a></li>";
+            }
+            else {
+            	echo "<li><a href='signin.html'>Singin/Signup</a></li>";
+            }*/
+            ?>
           </ul>
         </nav>
       </div>
@@ -71,31 +89,32 @@ $(document).ready(function () {
   <div class="main">
     <div class="wrapper">
       <article class="col-1">
-        <div class="indent-left">
-        <!--=================Forgot Password===================-->
-        <h3 class="p1">Account >> Forgot Password</h3>
-        <form id="signin-form" name="forgotpassword-form" action="php/forgetpwd.php" method="post" enctype="multipart/form-data">
-          <fieldset>
-            <label><span class="text-form">Enter last name:</span>
-              <input name="lname" type="text" />
-            </label>
-            <label><span class="text-form">Enter your Email ID:</span>
-              <input name="email" type="email" />
-           </label>
-          <div class="wrapper">
-             <div class="extra-wrap">
-             <div class="clear"></div>
+      	<div class="indent-left">
+			  <!--=================Sign In===================-->
+			  <h3 class="p1">Account Settings >> Password</h3>
+			  <form id="signin-form" name="resetpassword-form" action="php/rpassc.php" method="post" enctype="multipart/form-data">
+				  <fieldset>
+				  	 <input type="hidden" id="uid" name="uid" value="<?php// echo $uid;?>"/>
+					 <label><span class="text-form">New Password:</span>
+					  	<input name="newpassword" type="password" />
+					 </label>
+					 <label><span class="text-form">Confirm Password:</span>
+					  	<input name="vnewpassword" type="password" />
+					 </label>
+					<div class="wrapper">
+						 <div class="extra-wrap">
+						 <div class="clear"></div>
                          <div class="buttons1"> <input type="submit" value="Submit"> </div>
                      </div>
                     </div>
-            </fieldset>
-         </form>
-        </div>
+			      </fieldset>
+			   </form>
+      	</div>
       </article>
       <article class="col-2">
       <!--====================================-->
         <div class="wrapper">
-          
+	        
         </div>
       </article>
     </div>

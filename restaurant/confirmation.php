@@ -73,14 +73,11 @@ $(document).ready(function () {
       <article class="col-1">
         <div class="indent-left">
         <!--=================Forgot Password===================-->
-        <h3 class="p1">Account >> Forgot Password</h3>
-        <form id="signin-form" name="forgotpassword-form" action="php/forgetpwd.php" method="post" enctype="multipart/form-data">
+        <h3 class="p1">Account >> Confirmation Code</h3>
+        <form id="signin-form" name="forgotpassword-form" action="php/confirm.php" method="post" enctype="multipart/form-data">
           <fieldset>
-            <label><span class="text-form">Enter last name:</span>
-              <input name="lname" type="text" />
-            </label>
-            <label><span class="text-form">Enter your Email ID:</span>
-              <input name="email" type="email" />
+            <label><span class="text-form">Enter code:</span>
+              <input name="confirm" type="text" />
            </label>
           <div class="wrapper">
              <div class="extra-wrap">

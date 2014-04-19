@@ -101,7 +101,7 @@ $(document).ready(function () {
 					 <label><span class="text-form">New Password:</span>
 					  	<input name="newpassword" type="password" />
 					 </label>
-					 <label><span class="text-form">New Password:</span>
+					 <label><span class="text-form">Confirm Password:</span>
 					  	<input name="vnewpassword" type="password" />
 					 </label>
 					<div class="wrapper">
