@@ -20,11 +20,11 @@
 	
 	if($confirm=="abc123"){
 		echo "<script type='text/javascript'>alert('Please reset your password!!!')</script>";
-		echo "<script type='text/javascript'>window.location.replace('/restaurant/rpass.php');</script>";
+		echo "<script type='text/javascript'>window.location.replace('rpass.php');</script>";
 	}
 	else
 	{
 		echo "<script type='text/javascript'>alert('Wrong code!!! Sorry try again or signup.')</script>";
-		echo "<script type='text/javascript'>window.location.replace('/restaurant/signin.html');</script>";
+		echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
 	}
 ?>

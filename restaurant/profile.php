@@ -99,7 +99,7 @@ $(document).ready(function () {
       	<div class="indent-left">
 			  <!--=================Sign In===================-->
 			  <h3 class="p1">Account Settings >> Profile</h3>
-			  <form id="signin-form" name="updateprofile-form" action="php/updateprofile.php" method="post" enctype="multipart/form-data">
+			  <form id="signin-form" name="updateprofile-form" action="updateprofile.php" method="post" enctype="multipart/form-data">
 				  <fieldset>
 				  	 <input type="hidden" id="uid" name="uid" value="<?php echo $uid;?>"/>
 					 <label><span class="text-form">Email ID*:</span>

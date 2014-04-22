@@ -21,11 +21,11 @@
 	
 	if($email==$email1 && $lname==$lname1){
 		echo "<script type='text/javascript'>alert('Password reset link sent. Please enter received confirmation code on next page!!!')</script>";
-		echo "<script type='text/javascript'>window.location.replace('/restaurant/confirmation.php');</script>";
+		echo "<script type='text/javascript'>window.location.replace('confirmation.php');</script>";
 	}
 	else
 	{
 		echo "<script type='text/javascript'>alert('Sorry, Email ID does not exist!!! Please try again or signup.')</script>";
-		echo "<script type='text/javascript'>window.location.replace('/restaurant/signin.html');</script>";
+		echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
 	}
 ?>

@@ -51,8 +51,17 @@ $(document).ready(function () {
           </form>
           </li>
             <li><a href="index.php">Home</a></li>
-            <li><a href="allrestaurants.php">Restaurants</a></li>
-            <li><a href="contact.php">Contact</a></li>
+            <li><a href="allrestaurants.php">Top 20 Restaurants</a></li>
+            <?php            
+            if(isset($_SESSION['user'])){
+            	$uid = $_SESSION['user'];
+            	$fname = $_SESSION['fname'];
+            	echo "<li><a href='account.php'>Account|</a><a href='logout.php'>Logout</a></li>";
+            }
+            else {
+            	echo "<li><a href='signin.html'>Singin/Signup</a></li>";
+            }
+            ?>
           </ul>
         </nav>
       </div>

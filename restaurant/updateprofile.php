@@ -60,7 +60,7 @@
 	else
 	{
 	  echo "<script type='text/javascript'>alert('Changes updated!!!!')</script>";
-	  echo "<script type='text/javascript'>window.location.replace('/restaurant/account.php');</script>";
+	  echo "<script type='text/javascript'>window.location.replace('account.php');</script>";
 	}
 
 	oci_free_statement($query);
