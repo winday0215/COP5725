@@ -214,6 +214,34 @@ $(document).ready(function () {
 		//display searched restaurant
 		else {
 			echo "<h3 class='prev-indent-bot'>Restaurant List</h3><div>";
+			
+			
+			
+			if(!isset($_GET['ORDERBY'])){
+				$orderby = 'RDESC';
+			}
+			else {
+				$orderby = $_GET['ORDERBY'];
+			}
+			
+			//order by situations
+			if($orderby == 'RDESC'){
+				if($SearchBy == 'Zipcode'){
+					$orderpara = 'RATING DESC';
+				}
+				else {
+					$orderpara = 'avg(res.rating) DESC';
+				}
+			}
+			else if($orderby == 'RASC'){
+				if($SearchBy == 'Zipcode'){
+					$orderpara = 'RATING ASC';
+				}
+				else {
+					$orderpara = 'avg(res.rating) ASC';
+				}
+			}
+			
 			//echo $SearchBy;
 			if($SearchBy == 'City'){
 				$sql = "SELECT r.rid, r.rname, r.street, r.city, 
@@ -225,7 +253,7 @@ $(document).ready(function () {
       WHERE res.rid = re.rid AND res.rid = r.rid AND r.rid = rc.rid AND rc.cuisineid = c.cuisineid AND r.city = '$SearchPara'
 			GROUP BY r.rid,r.rname, r.street, r.city, 
 			r.state, r.zipcode, r.pricerange, c.cuisinename, res.rating 
-      order by avg(res.rating) DESC";
+      order by $orderpara";
 			}
 			else if($SearchBy == 'Zipcode'){
 				

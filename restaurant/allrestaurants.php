@@ -300,7 +300,7 @@ $(document).ready(function () {
 			echo "<span style='float:right;padding:2px;'> | </span>";
 			
 				
-			echo "<span style='float:right;'><a href='test.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=$pages'>Last Page</a></span>";
+			echo "<span style='float:right;'><a href='allrestaurants.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=$pages'>Last Page</a></span>";
 
 			
 			
@@ -308,18 +308,18 @@ $(document).ready(function () {
 			if($pagenum != $pages){
 				echo "<span style='float:right;padding:2px;'> | </span>";
 				$postpage = $pagenum+1;
-				echo "<span style='float:right;'><a href='test.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=$postpage'>Next Page</a></span>";
+				echo "<span style='float:right;'><a href='allrestaurants.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=$postpage'>Next Page</a></span>";
 			}
 			
 			if($pagenum != 1){
 				echo "<span style='float:right;padding:2px;'> | </span>";
 				$prepage = $pagenum-1;
-				echo "<span style='float:right;'><a href='test.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=$prepage'>Previous Page</a></span>";
+				echo "<span style='float:right;'><a href='allrestaurants.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=$prepage'>Previous Page</a></span>";
 			}
 			echo "<span style='float:right;padding:2px;'> | </span>";
 
 
-			echo "<span style='float:right;'><a href='test.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=1'>First Page</a></span>";
+			echo "<span style='float:right;'><a href='allrestaurants.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=1'>First Page</a></span>";
 			echo "</div>";
 			/*
 				
