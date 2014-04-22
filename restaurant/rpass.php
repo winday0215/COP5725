@@ -92,7 +92,7 @@ $(document).ready(function () {
 			  <!--=================Sign In===================-->
 			  <h3 class="p1">Account Settings >> Password</h3>
         <h6 class="p1">Make sure the passwords match!!! Else page refreshes to enter again.</h6>
-			  <form id="signin-form" name="resetpassword-form" action="php/rpassc.php" method="post" enctype="multipart/form-data">
+			  <form id="signin-form" name="resetpassword-form" action="rpassc.php" method="post" enctype="multipart/form-data">
 				  <fieldset>
 				   <label><span class="text-form">Email ID:</span>
               <input name="email" type="text" readonly value="<?php echo $_GET['email'] ?>" />

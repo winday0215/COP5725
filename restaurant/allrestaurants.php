@@ -105,7 +105,7 @@ $(document).ready(function () {
             if($SearchBy == '' && $SearchPara == ''){
             //choose restaurants, calculate average rating and display by averate rating DESC order
             echo "<h3 class='prev-indent-bot'>Top 20 Restaurant List</h3><div>";
-            if($uid == ""){
+            if(!isset($uid)){
             //echo $uid;
 			$sql =
 			"SELECT * FROM (SELECT r.rid, r.rname, r.street, r.city, 

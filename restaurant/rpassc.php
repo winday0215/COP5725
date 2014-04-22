@@ -37,13 +37,13 @@
 		{
 		  //setcookie("user",$useridm, time()+3600);
 		  echo "<script type='text/javascript'>alert('Password updated successfully!!!!')</script>";
-		  echo "<script type='text/javascript'>window.location.replace('/restaurant/signin.html');</script>";
+		  echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
 		}
 	}
 	else
 	{
 		echo "<script type='text/javascript'>alert('Passwords do not match!!!')</script>";
-		header("Location: /restaurant/rpass.php?email=".$email);
+		header("Location:rpass.php?email=".$email);
 		//echo "<script type='text/javascript'>window.location.replace('/restaurant/password.php');</script>";
 	}
 	

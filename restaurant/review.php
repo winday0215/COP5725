@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <?php
+$rid = $_GET['RID'];
+$rname = $_GET['NAME'];
 session_start();
 if(!isset($_SESSION['user'])){
 	echo "<script type='text/javascript'>alert('You must login at first!')</script>";
@@ -35,10 +37,7 @@ $(document).ready(function () {
 </head>
 <body id="page2">
 <!--==============================header=================================-->
-<?php
-	$rid = $_GET['RID'];
-	$rname = $_GET['NAME'];
-?>
+
 <header>
   <div class="row-top">
     <div class="main">

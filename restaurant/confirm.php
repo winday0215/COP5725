@@ -22,7 +22,7 @@
 	if($confirm=="abc123"){
 		echo "<script type='text/javascript'>alert('Please reset your password!!!')</script>";
 //<<<<<<< HEAD:restaurant/php/confirm.php
-		header("Location: /restaurant/rpass.php?email=".$email);
+		header("Location: rpass.php?email=".$email);
 		//echo "<script type='text/javascript'>window.location.replace('/restaurant/rpass.php');</script>";
 //=======
 		echo "<script type='text/javascript'>window.location.replace('rpass.php');</script>";

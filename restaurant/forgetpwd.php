@@ -22,7 +22,7 @@
 	if($email==$email1 && $lname==$lname1){
 		echo "<script type='text/javascript'>alert('Password reset link sent. Please enter received confirmation code on next page!!!')</script>";
 //<<<<<<< HEAD:restaurant/php/forgetpwd.php
-		header("Location: /restaurant/confirmation.php?email=".$email."&lastname="."$lname");
+		header("Location: confirmation.php?email=".$email."&lastname="."$lname");
 		//echo "<script type='text/javascript'>window.location.replace('/restaurant/confirmation.php');</script>";
 //=======
 		echo "<script type='text/javascript'>window.location.replace('confirmation.php');</script>";
