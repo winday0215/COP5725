@@ -8,19 +8,21 @@
 		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 	}
 
+	$email = $_POST["email"];
 	$confirm = $_POST["confirm"];
-	/*$sql = "SELECT email,lname FROM useraccount where email = '$email'";
+	$sql = "SELECT email,lname FROM useraccount where email = '$email'";
 	$query = oci_parse($connection,$sql);
 	oci_define_by_name($query,'email',$email1);
 	oci_execute($query);
 	while ($row=oci_fetch_assoc($query)) {
 		$email1=$row['EMAIL'];
 		$lname1=$row['LNAME'];
-	}*/
+	}
 	
 	if($confirm=="abc123"){
 		echo "<script type='text/javascript'>alert('Please reset your password!!!')</script>";
-		echo "<script type='text/javascript'>window.location.replace('/restaurant/rpass.php');</script>";
+		header("Location: /restaurant/rpass.php?email=".$email);
+		//echo "<script type='text/javascript'>window.location.replace('/restaurant/rpass.php');</script>";
 	}
 	else
 	{

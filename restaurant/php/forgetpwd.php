@@ -21,7 +21,8 @@
 	
 	if($email==$email1 && $lname==$lname1){
 		echo "<script type='text/javascript'>alert('Password reset link sent. Please enter received confirmation code on next page!!!')</script>";
-		echo "<script type='text/javascript'>window.location.replace('/restaurant/confirmation.php');</script>";
+		header("Location: /restaurant/confirmation.php?email=".$email."&lastname="."$lname");
+		//echo "<script type='text/javascript'>window.location.replace('/restaurant/confirmation.php');</script>";
 	}
 	else
 	{
