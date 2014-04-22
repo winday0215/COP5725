@@ -43,8 +43,7 @@ session_start();
 			  	</form>
       		</li>
             <li><a href="index.php">Home</a></li>
-            <li><a href="allrestaurants.php">Restaurants</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="allrestaurants.php">TOP 20 Restaurants</a></li>
             <?php            
             if(isset($_SESSION['user'])){
             	$uid = $_SESSION['user'];

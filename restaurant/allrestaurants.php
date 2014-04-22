@@ -57,8 +57,7 @@ $(document).ready(function () {
 			  	</form>
       		</li>
             <li><a href="index.php">Home</a></li>
-            <li><a href="allrestaurants.php">Restaurants</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="allrestaurants.php">TOP 20 Restaurants</a></li>
             <?php            
             if(isset($_SESSION['user'])){
             	$uid = $_SESSION['user'];
@@ -86,8 +85,7 @@ $(document).ready(function () {
 <section id="content">
   <div class="main">
     <div class="container">
-      <h3 class="prev-indent-bot">Restaurant List</h3>
-        <div>
+
         <?php
         //check if it's a search result
         	$SearchBy = '';
@@ -106,9 +104,11 @@ $(document).ready(function () {
                           
             if($SearchBy == '' && $SearchPara == ''){
             //choose restaurants, calculate average rating and display by averate rating DESC order
-            //
-			$stid = oci_parse($connection, 
-			'SELECT r.rid, r.rname, r.street, r.city, 
+            echo "<h3 class='prev-indent-bot'>Top 20 Restaurant List</h3><div>";
+            if($uid == ""){
+            //echo $uid;
+			$sql =
+			"SELECT * FROM (SELECT r.rid, r.rname, r.street, r.city, 
 			r.state, r.zipcode, r.pricerange, c.cuisinename, res.rating, count(re.reviewid) as reviews
 			FROM 
       (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra
@@ -117,40 +117,56 @@ $(document).ready(function () {
       WHERE res.rid = re.rid AND res.rid = r.rid AND r.rid = rc.rid AND rc.cuisineid = c.cuisineid
 			GROUP BY r.rid,r.rname, r.street, r.city, 
 			r.state, r.zipcode, r.pricerange, c.cuisinename, res.rating 
-      order by avg(res.rating) DESC');
-			
+      order by avg(res.rating) DESC)
+      WHERE rownum <= 20";
+      		}
+      		else{
+      		//echo $uid;
+	      		$sql=
+			"SELECT * FROM (SELECT r.rid, r.rname, r.street, r.city, 
+			r.state, r.zipcode, r.pricerange, c.cuisinename, res.rating, count(re.reviewid) as reviews
+			FROM 
+      (SELECT r1.rid as RID, avg(ra.rating)as rating FROM restaurant r1, rates ra, useraccount u
+      WHERE r1.rid = ra.rid AND u.userid = $uid AND u.city = r1.city
+      GROUP BY r1.rid) res, review re, restaurant r, cuisine c, resc rc
+      WHERE res.rid = re.rid AND res.rid = r.rid AND r.rid = rc.rid AND rc.cuisineid = c.cuisineid
+			GROUP BY r.rid,r.rname, r.street, r.city, 
+			r.state, r.zipcode, r.pricerange, c.cuisinename, res.rating 
+      order by avg(res.rating) DESC) WHERE rownum<=20";
+      		}
+			$stid = oci_parse($connection, $sql);
 			//this define must be done before oci_execute
-			oci_define_by_name($stid, 'RID',$rid);
-			oci_define_by_name($stid, 'RNAME',$rname);
-			oci_define_by_name($stid, 'STREET',$street);
-			oci_define_by_name($stid, 'CITY',$city);
-			oci_define_by_name($stid, 'STATE',$state);
-			oci_define_by_name($stid, 'ZIPCODE',$zipcode);
-			oci_define_by_name($stid, 'PRICERANGE',$pricerange);
-			oci_define_by_name($stid, 'REVIEWS',$numreview);
-			oci_define_by_name($stid, 'CUISINENAME',$cuisinename);
-			oci_define_by_name($stid, 'RATING', $rating);
 			oci_execute($stid);
-						
-			$i =1;
+			
+			
+			$nrows = oci_fetch_all($stid, $res);
+			echo $nrows." restaurants in total.";
 			echo "<hr>";
-			while (oci_fetch($stid)) {
-				if($i == 10){
-					$i = 1;
-				}
+			for($i=0; $i < $nrows; $i++){
+				$rid = $res['RID'][$i];
+				$rname = $res['RNAME'][$i];
+				$street = $res['STREET'][$i];
+				$city = $res['CITY'][$i];
+				$state = $res['STATE'][$i];
+				$zipcode = $res['ZIPCODE'][$i];
+				$pricerange = $res['PRICERANGE'][$i];
+				$cuisinename = $res['CUISINENAME'][$i];
+				$rating = $res['RATING'][$i];
+				$reviews = $res['REVIEWS'][$i];
 				
 				echo "<ul id='review-list' class='wrapper'>";
 				echo "<li>";
 				//display pic
+				$index = rand(1,10);
 				echo "<div class='summary-left float-left'>
-							<img class='summary-pic' src='images/$i.jpg' alt=''>
+							<img class='summary-pic' src='images/$index.jpg' alt=''>
 					 </div>";
 				//display restaurant name
 				//add review button direct to review.php
 				echo "<div class='wrapper review-summary'>
 							<span class='float-right'><a href='review.php?RID=$rid&NAME=$rname&USER=1'><input type='button' class='button-orange' value='Add Review'/></a></span>
 							<h4 class='summary-title float-left'><a href='restaurant.php?RID=$rid'>$rname</a></h4><div class='afford'><span class='gold'>";
-				//display price range
+							//display price range
 				if($pricerange == 1){
 					echo "\$";
 				}
@@ -175,27 +191,29 @@ $(document).ready(function () {
 				}
 				else {
 					echo "<p><img src='images/star_0";
-					echo $rating.".png' alt=''/><span class='review-count'>$numreview Reviews</span></p>";
+					echo $rating.".png' alt=''/><span class='review-count'></span></p>";
 				}
 				
 				//display address
 				echo "<div class='most-recent float-left'><h4>Address: </h4></div>";
 				echo "<p><span></span>$street, $city, $state, $zipcode<a href='restaurant.php?RID=$rid' class='float-right'>Read Details...</a></p>";
 				
+				//if search by zipcode, display distance as well
+				if($SearchBy == 'Zipcode'){
+					echo "<div class='most-recent float-left'><h4>Distance: </h4></div>";
+					echo "<p><span></span> ".round($distance,4)." Miles</p>";
+				}
 				echo "</div>";
 				echo "</li>";
 				echo "</ul>";
-				$i++;
-			}
 
-//
-// VERY important to close Oracle Database Connections and free statements!
-//
+			}
 			oci_free_statement($stid);
 		}
 		
 		//display searched restaurant
 		else {
+			echo "<h3 class='prev-indent-bot'>Restaurant List</h3><div>";
 			//echo $SearchBy;
 			if($SearchBy == 'City'){
 				$sql = "SELECT r.rid, r.rname, r.street, r.city, 
@@ -253,39 +271,88 @@ $(document).ready(function () {
 			}
 			//echo $sql;
 			$stid1 = oci_parse($connection, $sql);
-			
-			//this define must be done before oci_execute
-			oci_define_by_name($stid1, 'RID',$rid);
-			oci_define_by_name($stid1, 'RNAME',$rname);
-			oci_define_by_name($stid1, 'STREET',$street);
-			oci_define_by_name($stid1, 'CITY',$city);
-			oci_define_by_name($stid1, 'STATE',$state);
-			oci_define_by_name($stid1, 'ZIPCODE',$zipcode);
-			oci_define_by_name($stid1, 'REVIEWS',$numreview);
-			oci_define_by_name($stid1, 'PRICERANGE',$pricerange);
-			if($SearchBy == 'Zipcode'){
-				oci_define_by_name($stid1, 'DISTANCE',$distance);
-			}
-			oci_define_by_name($stid1, 'RATING', $rating);
-			oci_define_by_name($stid1, 'CUISINENAME',$cuisinename);
 			oci_execute($stid1);
 			
-			$i =1;
 			
 			if($SearchBy == 'Zipcode'){
-				echo "Restaurants Within 10 Miles of ".$SearchPara;
+				echo "Restaurants Within 10 Miles of ".$SearchPara."<br>";
 			}
+			$nrows = oci_fetch_all($stid1, $res);
+			/*
+				pages
+			*/
+			$pages = intval($nrows/20);
+			if($nrows % 20){
+				$pages++;
+			}
+			if(isset($_GET['PAGENUM'])){
+				$pagenum = $_GET['PAGENUM'];
+			}
+			else{
+				$pagenum = 1;
+			}
+			$offset = ($pagenum-1)*20;
+			
+			echo "<div>";
+			echo $nrows." restaurants in total.";
+			
+			echo "<span style='float:right;'>Total $pages Pages</span>";
+			echo "<span style='float:right;padding:2px;'> | </span>";
+			
+				
+			echo "<span style='float:right;'><a href='test.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=$pages'>Last Page</a></span>";
+
+			
+			
+			
+			if($pagenum != $pages){
+				echo "<span style='float:right;padding:2px;'> | </span>";
+				$postpage = $pagenum+1;
+				echo "<span style='float:right;'><a href='test.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=$postpage'>Next Page</a></span>";
+			}
+			
+			if($pagenum != 1){
+				echo "<span style='float:right;padding:2px;'> | </span>";
+				$prepage = $pagenum-1;
+				echo "<span style='float:right;'><a href='test.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=$prepage'>Previous Page</a></span>";
+			}
+			echo "<span style='float:right;padding:2px;'> | </span>";
+
+
+			echo "<span style='float:right;'><a href='test.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=1'>First Page</a></span>";
+			echo "</div>";
+			/*
+				
+				END of pages
+			*/
+			
+			
 			echo "<hr>";
-			while (oci_fetch($stid1)) {
+			
+			$maxcount = min(20, $nrows - $offset);
+			for($i=$offset; $i < $offset + $maxcount; $i++){
 			//echo $rname;
-				if($i == 10){
-					$i = 1;
+				$rid = $res['RID'][$i];
+				$rname = $res['RNAME'][$i];
+				$street = $res['STREET'][$i];
+				$city = $res['CITY'][$i];
+				$state = $res['STATE'][$i];
+				$zipcode = $res['ZIPCODE'][$i];
+				$pricerange = $res['PRICERANGE'][$i];
+				$cuisinename = $res['CUISINENAME'][$i];
+				$rating = $res['RATING'][$i];
+				$reviews = $res['REVIEWS'][$i];
+				if($SearchBy == 'Zipcode'){
+					$distance = $res['DISTANCE'][$i];
 				}
+				
+				
 				echo "<ul id='review-list' class='wrapper'>";
 				echo "<li>";
 				//display pic
+				$index = rand(1,10);
 				echo "<div class='summary-left float-left'>
-							<img class='summary-pic' src='images/$i.jpg' alt=''>
+							<img class='summary-pic' src='images/$index.jpg' alt=''>
 					 </div>";
 				//display restaurant name
 				//add review button direct to review.php
@@ -332,8 +399,35 @@ $(document).ready(function () {
 				echo "</div>";
 				echo "</li>";
 				echo "</ul>";
-				$i++;
 			}
+			echo "<div>";
+			echo $nrows." restaurants in total.";
+			
+			echo "<span style='float:right;'>Total $pages Pages</span>";
+			echo "<span style='float:right;padding:2px;'> | </span>";
+			
+				
+			echo "<span style='float:right;'><a href='test.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=$pages'>Last Page</a></span>";
+
+			
+			
+			
+			if($pagenum != $pages){
+				echo "<span style='float:right;padding:2px;'> | </span>";
+				$postpage = $pagenum+1;
+				echo "<span style='float:right;'><a href='test.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=$postpage'>Next Page</a></span>";
+			}
+			
+			if($pagenum != 1){
+				echo "<span style='float:right;padding:2px;'> | </span>";
+				$prepage = $pagenum-1;
+				echo "<span style='float:right;'><a href='test.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=$prepage'>Previous Page</a></span>";
+			}
+			echo "<span style='float:right;padding:2px;'> | </span>";
+
+
+			echo "<span style='float:right;'><a href='test.php?SearchBy=$SearchBy&SearchPara=$SearchPara&PAGENUM=1'>First Page</a></span>";
+			echo "</div>";
 			oci_free_statement($stid1);
 		}
 		oci_close($connection);

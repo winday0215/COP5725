@@ -73,7 +73,7 @@ $(document).ready(function () {
 		$i =1;
 		while (oci_fetch($stid)){
 	     // Get lat and long by address         
-	        $address = $street.",".$city.",".$state.",".$zipcode; // Google HQ
+	        $address = $street.",".$city.",".$state; // Google HQ
 	        //echo $address;
 	        $prepAddr = str_replace(' ','+',$address);
 	        $prepAddr = str_replace('#','%23',$prepAddr);
@@ -131,8 +131,7 @@ $(document).ready(function () {
 			  	</form>
       		</li>
             <li><a href="index.php">Home</a></li>
-            <li><a href="allrestaurants.php">Restaurants</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="allrestaurants.php">TOP 20 Restaurants</a></li>
             <?php            
             if(isset($_SESSION['user'])){
             	$uid = $_SESSION['user'];
@@ -175,7 +174,7 @@ $(document).ready(function () {
 				//display restaurant name
 				//add review button direct to review.php
 				echo "<div class='wrapper review-summary'>
-							<span class='float-right'><a href='review.php?RID=$rid&NAME=$rname&USER=1'><input type='button' class='button-orange' value='Add Review'/></a></span>
+							<span class='float-right'><a href='review.php?RID=$rid&NAME=$rname'><input type='button' class='button-orange' value='Add Review'/></a></span>
 							<div class='afford'><span class='gold'>";
 				//display price range
 				if($pricerange == 1){
@@ -237,8 +236,8 @@ $(document).ready(function () {
 		echo "<br><br><br>";
 		
 		
-		$sql = "select u.FNAME, u.city, u.STATE, ra.rating, r.content from review r, useraccount u, rates ra
-					where r.RID=$rid AND r.USERID = u.USERID AND r.USERID= ra.USERID AND r.RID=ra.RID";
+		$sql = "select ra.rating, u.FNAME, u.city, u.STATE, r.content, r.REVIEWDATE from review r, useraccount u, rates ra
+					where r.RID=$rid AND r.USERID = u.USERID AND u.USERID=ra.USERID AND r.RID=ra.RID AND r.reviewid=ra.ratingid ORDER BY r.reviewdate DESC";
 			//echo $sql;
 		$stid = oci_parse($connection,$sql);
 		oci_define_by_name($stid, 'FNAME',$fname);
@@ -246,6 +245,7 @@ $(document).ready(function () {
 		oci_define_by_name($stid, 'STATE',$ustate);
 		oci_define_by_name($stid, 'RATING',$urating);
 		oci_define_by_name($stid, 'CONTENT',$reviewcontent);
+		oci_define_by_name($stid, 'REVIEWDATE',$reviewdate);
 		oci_execute($stid);
 			
 		
@@ -263,7 +263,7 @@ $(document).ready(function () {
 			
 	
 			echo "<p><img src='images/star_0";
-			echo $urating.".png' alt=''/><span class='review-count'></span></p>";
+			echo $urating.".png' alt=''/><span class='review-count'></span><i>$reviewdate</i></p>";
 				
 			echo "<p>".$reviewcontent."</p>";
 			

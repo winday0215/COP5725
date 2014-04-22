@@ -38,7 +38,6 @@ $(document).ready(function () {
 <?php
 	$rid = $_GET['RID'];
 	$rname = $_GET['NAME'];
-	$userid = $_GET['USER'];
 ?>
 <header>
   <div class="row-top">
@@ -61,8 +60,7 @@ $(document).ready(function () {
 			  	</form>
       		</li>
             <li><a href="index.php">Home</a></li>
-            <li><a href="allrestaurants.php">Restaurants</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="allrestaurants.php">TOP 20 Restaurants</a></li>
             <?php            
             if(isset($_SESSION['user'])){
             	$uid = $_SESSION['user'];
@@ -95,15 +93,12 @@ $(document).ready(function () {
 			  <!--=================Write Review===================-->
 			  <h3 class="p1">Review</h3>
 			  <h4>Write your review for <?php echo $rname; ?></h4>
-			  <form id="signin-form" action="php/insertreview.php" method="post" enctype="multipart/form-data">
+			  <form id="signin-form" action="insertreview.php" method="post" enctype="multipart/form-data">
 				  <fieldset>
 				  <!--hidden field to post rid, rnam and userid to next page-->
 				  <input name="rid" id='rid' type="hidden" value="<?php echo $rid;?>" />
 				  <input name="rname" id='rname' type="hidden" value="<?php echo $rname;?>" />
-				  <input name="userid" id='userid' type="hidden" value="<?php echo $userid;?>" />
-					 <label><span class="text-form">Title*:</span>
-					  	<input name="Title" id="Title" type="text" />
-					 </label>
+
 					 <label><span class="text-form">Rating*:</span>
 						<select name="Rating"> 
 						<option value="" selected="selected">Select a Rating</option> 
