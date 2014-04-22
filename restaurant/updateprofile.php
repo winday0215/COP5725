@@ -47,7 +47,7 @@
 	if ($_POST['DOB']) {$date = $_POST['DOB'];} else {$date = $date1;}
 	if ($_POST['gender']) {$gender = $_POST['gender'];} else {$gender = $gender1;}
 
-	echo $email ." ". $fname ." ". $lname ." ". $street ." ". $state ." ". $zipcode ." ". $gender ." ". $date ." ". $city;
+	//echo $email ." ". $fname ." ". $lname ." ". $street ." ". $state ." ". $zipcode ." ". $gender ." ". $date ." ". $city;
 
 	$sql = "UPDATE useraccount SET street='$street', zipcode='$zipcode', gender='$gender', dob='$date', city='$city', state='$state' WHERE userid='$uid'";
 	$query = oci_parse($connection,$sql);
@@ -60,7 +60,7 @@
 	else
 	{
 	  echo "<script type='text/javascript'>alert('Changes updated!!!!')</script>";
-	  echo "<script type='text/javascript'>window.location.replace('/restaurant/account.php');</script>";
+	  echo "<script type='text/javascript'>window.location.replace('account.php');</script>";
 	}
 
 	oci_free_statement($query);

@@ -21,12 +21,16 @@
 	
 	if($email==$email1 && $lname==$lname1){
 		echo "<script type='text/javascript'>alert('Password reset link sent. Please enter received confirmation code on next page!!!')</script>";
+//<<<<<<< HEAD:restaurant/php/forgetpwd.php
 		header("Location: /restaurant/confirmation.php?email=".$email."&lastname="."$lname");
 		//echo "<script type='text/javascript'>window.location.replace('/restaurant/confirmation.php');</script>";
+//=======
+		echo "<script type='text/javascript'>window.location.replace('confirmation.php');</script>";
+//>>>>>>> 972b326ce4f2e9cb68381c40f13f08331d928bf3:restaurant/forgetpwd.php
 	}
 	else
 	{
 		echo "<script type='text/javascript'>alert('Sorry, Email ID does not exist!!! Please try again or signup.')</script>";
-		echo "<script type='text/javascript'>window.location.replace('/restaurant/signin.html');</script>";
+		echo "<script type='text/javascript'>window.location.replace('signin.html');</script>";
 	}
 ?>

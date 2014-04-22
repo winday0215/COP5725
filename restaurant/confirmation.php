@@ -74,7 +74,7 @@ $(document).ready(function () {
         <div class="indent-left">
         <!--=================Forgot Password===================-->
         <h3 class="p1">Account >> Confirmation Code</h3>
-        <form id="signin-form" name="forgotpassword-form" action="php/confirm.php" method="post" enctype="multipart/form-data">
+        <form id="signin-form" name="forgotpassword-form" action="confirm.php" method="post" enctype="multipart/form-data">
           <fieldset>
             <label><span class="text-form">Email ID:</span>
               <input name="email" type="text" readonly value="<?php echo $_GET['email'] ?>" />

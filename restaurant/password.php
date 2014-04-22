@@ -59,8 +59,7 @@ $(document).ready(function () {
 			  	</form>
       		</li>
             <li><a href="index.php">Home</a></li>
-            <li><a href="allrestaurants.php">Restaurants</a></li>
-            <li><a href="contact.php">Contact</a></li>
+            <li><a href="allrestaurants.php">TOP 20 Restaurants</a></li>
             <?php            
             if(isset($_SESSION['user'])){
             	$uid = $_SESSION['user'];
@@ -92,7 +91,7 @@ $(document).ready(function () {
       	<div class="indent-left">
 			  <!--=================Sign In===================-->
 			  <h3 class="p1">Account Settings >> Password</h3>
-			  <form id="signin-form" name="updatepassword-form" action="php/updatepassword.php" method="post" enctype="multipart/form-data">
+			  <form id="signin-form" name="updatepassword-form" action="updatepassword.php" method="post" enctype="multipart/form-data">
 				  <fieldset>
 				  	 <input type="hidden" id="uid" name="uid" value="<?php echo $uid;?>"/>
 					  <label><span class="text-form">Old Password:</span>
