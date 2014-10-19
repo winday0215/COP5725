@@ -1,10 +1,7 @@
 <!DOCTYPE html>
-<?php
-session_start();
-?>
 <html lang="en">
 <head>
-<title>Kravings.com</title>
+<title>Ding Dong Restaurant | Home</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen">
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
@@ -26,34 +23,12 @@ session_start();
   <div class="row-top">
     <div class="main">
       <div class="wrapper">
-        <h1><a href="index.php">Kravings<span>.com</span></a></h1>
+        <h1><a href="index.php">Ding Dong Restaurant</a></h1>
         <nav>
           <ul class="menu">
-          	<li>      
-          		<form id="search-form" action="search.php" method="post"> 
-			  		<input type="text" id="tb7" name="searchkey" id="searchkey"/>
-			  		<select name="searchtype" id="searchtype">
-				  		<option id="">--Search By--</option>
-				  		<option id="city">City</option>
-				  		<option id="rname">Restaurant Name</option>
-				  		<option id="zipcode">Zipcode</option>
-				  		<option id="cuisine">Cuisine</option>
-			  		</select>
-			  		<input type="submit" name="searchsubmit" value="Go" class="sub1"> 
-			  	</form>
-      		</li>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="allrestaurants.php">TOP 20 Restaurants</a></li>
-            <?php            
-            if(isset($_SESSION['user'])){
-            	$uid = $_SESSION['user'];
-            	$fname = $_SESSION['fname'];
-            	echo "<li><a href='account.php'>Account|</a><a href='logout.php'>Logout</a></li>";
-            }
-            else {
-            	echo "<li><a href='signin.html'>Signin/Signup</a></li>";
-            }
-            ?>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="contact.html">Contact</a></li>
           </ul>
         </nav>
       </div>
@@ -62,8 +37,16 @@ session_start();
   <div class="row-bot">
     <div class="row-bot-bg">
       <div class="main"> 
-      <h2>Impressive Selection <span>for any Occasion</span></h2>
-        <div class="slider-wrapper">
+      <h2><span>Impressive Selection for any Occasion</span></h2>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="content">
+  <div class="main">
+    <div class="container">
+		<div class="slider-wrapper">
           <div class="slider">
             <ul class="items">
               <li> <img src="images/slider-img1.jpg" alt="" /> </li>
@@ -72,15 +55,13 @@ session_start();
             </ul>
           </div>
         </div>
-      </div>
     </div>
   </div>
-</header>
-
+</section>
 <!--==============================footer=================================-->
 <footer>
   <div class="main">
-    <div class="aligncenter"> <span>Copyright &copy; <a href="#">Kravings.com</a> All Rights Reserved</span> Design by <a target="_blank" href="http://www.templatemonster.com/">Kravings.com</a> </div>
+    <div class="aligncenter"> <span>Copyright &copy; <a href="#">DingDong Restaurant</a> All Rights Reserved</span> Design by <a target="_blank" href="http://www.templatemonster.com/">DingDong Restaurant</a> </div>
   </div>
 </footer>
 <script type="text/javascript">Cufon.now();</script>

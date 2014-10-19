@@ -15,16 +15,16 @@
 }
 /**********allrestaurants.html******/
 #review-list {overflow:hidden; list-style-type: none;}
-#review-list li {border-bottom:2px solid #666;}
+
 .summary-left{width:240px;margin:0 auto; overflow:hidden;}
 .summary-pic {width:210px; height:125px;}
 .map-wrapper {width:320px;height:220px;padding: 10px; }
-.review-summary{margin: 10px; display:block; width:580px;}
+.review-summary{margin: 10px; display:block; width:580px;height: 125px;}
 .review-count {margin-left:20px;}
 .summary-title {font-size:16px; line-height:30px; margin-right:20px;}
 .afford{line-height:30px;font-weight:bold;}
 .summary-profile-pic {width:40px; height:40px;}
-
+.description {height: 60px;}
 /**********menu.html************/
 #page2 #content {
 	padding:25px 0 48px;

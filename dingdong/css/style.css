@@ -173,7 +173,7 @@ header {
 .row-top {
 	width:100%;
 	padding:10px 0;
-	background:#000;
+	background:#339900;
 }
 h1 {
 	padding:0px 0 0 10px;
@@ -199,7 +199,7 @@ h2 {
 	text-align:center;
 }
 h2 span {
-	color:#000;
+	color:#336600;
 }
 #page1 h2 {
 	margin-bottom:9px;
@@ -268,34 +268,39 @@ h6 {
 	padding-left:40px;
 }
 .menu li a {
-	font-size:14px;
+	font-size:20px;
+	font-style: italic;
+	font-family: fantasy;
 	line-height:18px;
 	padding:0;
-	color:#fff;
+	color:#ff6600;
 }
 .menu li a.active, .menu > li > a:hover {
 	color:#c52e02;
 }
 .row-bot {
 	width:100%;
-	background:url(../images/row-bot-tail.gif) center top repeat-x;
+	background-color: white;
+	/**background:url(../images/row-bot-tail.gif) center top repeat-x;**/
 }
 .row-bot-bg {
 	width:100%;
 	min-height:122px;
-	background:url(../images/row-bot-bg.jpg) center top no-repeat;
+	background-color: white;
+	/**background:url(../images/row-bot-bg.jpg) center top no-repeat;**/
 }
 /***** slider *****/
 .slider-wrapper {
-	width:940px;
-	height:466px;
+	margin: auto;
+	width:640px;
+	height:480px;
 	padding:10px;
 	background:#fff;
 	overflow:hidden;
 }
 .slider {
-	width:940px;
-	height:466px;
+	width:640px;
+	height:480px;
 }
 .items {
 	display:none;
@@ -781,6 +786,7 @@ dl span {
 footer {
 	width:100%;
 	padding:23px 0 30px;
+	background:#336600;
 	color:#fff;
 }
 footer a {
